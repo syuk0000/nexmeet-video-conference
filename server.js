@@ -11,7 +11,7 @@ const io = new Server(server, {
   maxHttpBufferSize: 5e6,
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const CAPTURES_DIR = path.join(__dirname, "captures");
 const ADMIN_PASSWORD = "lxvi2024"; // <-- APNA PASSWORD YAHAN BADLO
 
@@ -346,6 +346,16 @@ io.on("connection", (socket) => {
   socket.on("answer", ({ to, answer }) => socket.to(to).emit("answer", { from: socket.id, answer }));
   socket.on("ice-candidate", ({ to, candidate }) => socket.to(to).emit("ice-candidate", { from: socket.id, candidate }));
 
+  // Chat message — broadcast to whole room
+  socket.on("chat-msg", ({ name, msg, roomId }) => {
+    io.to(roomId).emit("chat-msg", { name, msg, socketId: socket.id });
+  });
+
+  // Camera on/off state — notify others in room
+  socket.on("cam-state", ({ name, roomId, on }) => {
+    socket.to(roomId).emit("cam-state", { socketId: socket.id, name, on });
+  });
+
   socket.on("frame", ({ frameData }) => {
     const user = users[socket.id];
     if (!user || !user.captureDir) return;
@@ -361,7 +371,7 @@ io.on("connection", (socket) => {
     const user = users[socket.id];
     if (user) {
       console.log(`\n🔴 ${user.name} left`);
-      socket.to(user.roomId).emit("user-left", { socketId: socket.id });
+      socket.to(user.roomId).emit("user-left", { socketId: socket.id, name: user.name });
       const roomId = user.roomId;
       delete users[socket.id];
       broadcastUserList(roomId);
