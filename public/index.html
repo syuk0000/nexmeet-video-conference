@@ -269,6 +269,7 @@
       width: 100%; height: 100%;
       object-fit: cover; /* fills tile like Zoom */
       display: block;
+      transform: scaleX(-1);
     }
 
     .video-tile .name-tag {
@@ -586,7 +587,11 @@
     nt.innerHTML=`<div class="status-dot"></div>${name}`;
     tile.appendChild(nt);
 
-    if(isLocal){ const yb=document.createElement('div'); yb.className='you-badge'; yb.textContent='YOU'; tile.appendChild(yb); }
+    if(isLocal){
+  const yb=document.createElement('div'); yb.className='you-badge'; yb.textContent='YOU'; tile.appendChild(yb);
+  const v=tile.querySelector('video');
+  if(v) v.style.transform='scaleX(-1)';
+}
     grid.appendChild(tile);
     updateGrid();
   }
