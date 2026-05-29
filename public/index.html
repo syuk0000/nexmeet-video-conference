@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
   <title>LXVI — Video Conference</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17,7 +19,6 @@
       --accent: #7c6dfa;
       --accent2: #fa6d8f;
       --accent3: #6dfacc;
-      --gold: #fac96d;
       --text: #f0eeff;
       --text2: #9990cc;
       --text3: #5a5480;
@@ -26,620 +27,363 @@
       --glow: #7c6dfa33;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     html, body {
-      height: 100%;
+      height: 100%; width: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'Space Grotesk', sans-serif;
       overflow: hidden;
-    }
-
-    /* ─── NOISE TEXTURE OVERLAY ─── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.4;
-    }
-
-    /* ─── ANIMATED BG ORBS ─── */
-    .bg-orb {
       position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-      animation: orbFloat 8s ease-in-out infinite;
-    }
-    .orb1 { width: 500px; height: 500px; background: #7c6dfa12; top: -100px; left: -100px; animation-delay: 0s; }
-    .orb2 { width: 400px; height: 400px; background: #fa6d8f0e; bottom: -80px; right: -80px; animation-delay: -3s; }
-    .orb3 { width: 300px; height: 300px; background: #6dfacc0a; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -6s; }
-
-    @keyframes orbFloat {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.05); }
     }
 
-    /* ══════════════════════════════
-       STEP 1 — NAME SCREEN
-    ══════════════════════════════ */
+    .bg-orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(80px); pointer-events: none;
+    }
+    .orb1 { width: 400px; height: 400px; background: #7c6dfa12; top: -100px; left: -100px; }
+    .orb2 { width: 300px; height: 300px; background: #fa6d8f0e; bottom: -80px; right: -80px; }
+
+    /* ══ SCREENS ══ */
     .screen {
       position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      padding: 20px;
+      overflow-y: auto;
     }
-    .screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.97);
-    }
+    .screen.hidden { opacity: 0; pointer-events: none; transform: scale(0.97); }
 
+    /* ══ CARD ══ */
     .card {
       background: var(--surface);
       border: 1px solid var(--border2);
-      border-radius: 28px;
-      padding: 52px 48px;
-      width: 460px;
+      border-radius: 24px;
+      padding: 36px 28px;
+      width: 100%;
+      max-width: 420px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 0 0 1px var(--border), 0 60px 120px #00000090, inset 0 1px 0 #ffffff08;
+      box-shadow: 0 40px 80px #00000080, inset 0 1px 0 #ffffff08;
     }
-
     .card::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
     }
 
     .brand {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 52px;
-      letter-spacing: 0.06em;
-      line-height: 1;
-      margin-bottom: 6px;
+      font-size: clamp(40px, 12vw, 56px);
+      letter-spacing: 0.06em; line-height: 1;
       background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
     }
-
     .brand-tagline {
-      font-size: 12px;
-      color: var(--text3);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 44px;
-      font-weight: 500;
+      font-size: 11px; color: var(--text3);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 36px; font-weight: 500;
     }
-
-    .input-group { margin-bottom: 20px; }
 
     .input-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 8px;
-      display: block;
+      font-size: 11px; font-weight: 600; color: var(--text3);
+      text-transform: uppercase; letter-spacing: 0.12em;
+      margin-bottom: 8px; display: block;
     }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .input-wrap .input-icon {
-      position: absolute;
-      left: 16px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      pointer-events: none;
-    }
-
+    .input-wrap { position: relative; margin-bottom: 20px; }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none; }
     .field {
       width: 100%;
       background: var(--surface2);
       border: 1px solid var(--border2);
       border-radius: 14px;
-      padding: 15px 16px 15px 44px;
+      padding: 15px 14px 15px 42px;
       color: var(--text);
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      outline: none;
+      font-size: 16px; /* 16px prevents iOS zoom */
+      font-weight: 500; outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-
-    .field:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--glow);
-    }
-
+    .field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
     .field::placeholder { color: var(--text3); }
 
     .btn-primary {
       width: 100%;
       background: linear-gradient(135deg, var(--accent), #9b8dff);
-      border: none;
-      border-radius: 14px;
+      border: none; border-radius: 14px;
       padding: 17px;
       color: #fff;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.03em;
-      margin-top: 8px;
-      position: relative;
-      overflow: hidden;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      letter-spacing: 0.03em; margin-top: 4px;
+      position: relative; overflow: hidden;
+      -webkit-appearance: none;
     }
+    .btn-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #ffffff18 0%, transparent 100%); }
+    .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
 
-    .btn-primary::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, #ffffff18 0%, transparent 100%);
-    }
-
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--glow); }
-    .btn-primary:active { transform: translateY(0); }
-
-    /* ══════════════════════════════
-       STEP 2 — ROOM SELECTION
-    ══════════════════════════════ */
-    #room-screen .card { width: 520px; }
-
-    .greeting {
-      font-size: 13px;
-      color: var(--text3);
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-
+    /* ══ ROOM SCREEN ══ */
+    .greeting { font-size: 12px; color: var(--text3); margin-bottom: 4px; font-weight: 500; }
     .greeting-name {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 44px;
+      font-size: clamp(32px, 10vw, 44px);
       letter-spacing: 0.04em;
       background: linear-gradient(135deg, #fff, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 36px;
-      line-height: 1;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 28px; line-height: 1;
     }
 
-    .choice-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
+    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
     .choice-btn {
       background: var(--surface2);
       border: 1px solid var(--border2);
-      border-radius: 16px;
-      padding: 24px 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: left;
-      color: var(--text);
+      border-radius: 16px; padding: 20px 14px;
+      cursor: pointer; transition: all 0.2s;
+      text-align: left; color: var(--text);
       font-family: 'Space Grotesk', sans-serif;
-      position: relative;
-      overflow: hidden;
+      -webkit-appearance: none;
     }
+    .choice-btn:active { transform: scale(0.97); }
+    .choice-btn.active.create { border-color: var(--accent); background: #7c6dfa12; }
+    .choice-btn.active.join-btn-opt { border-color: var(--accent2); background: #fa6d8f12; }
+    .choice-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+    .choice-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .choice-desc { font-size: 11px; color: var(--text3); }
 
-    .choice-btn::before {
-      content: '';
-      position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .choice-btn.create::before { background: linear-gradient(135deg, #7c6dfa18, #7c6dfa05); }
-    .choice-btn.join-btn-opt::before { background: linear-gradient(135deg, #fa6d8f18, #fa6d8f05); }
-
-    .choice-btn:hover::before { opacity: 1; }
-    .choice-btn:hover { border-color: #ffffff28; transform: translateY(-2px); }
-    .choice-btn.active.create { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent)22; }
-    .choice-btn.active.join-btn-opt { border-color: var(--accent2); box-shadow: 0 0 0 1px var(--accent2)22; }
-
-    .choice-icon { font-size: 28px; margin-bottom: 10px; display: block; }
-    .choice-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .choice-desc { font-size: 12px; color: var(--text3); }
-
-    /* ─── New Room Panel ─── */
-    #new-room-panel, #join-room-panel {
-      display: none;
-      animation: slideDown 0.25s ease;
-    }
-
+    #new-room-panel, #join-room-panel { display: none; animation: slideDown 0.25s ease; }
     #new-room-panel.show, #join-room-panel.show { display: block; }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
     .room-id-display {
-      background: var(--surface3);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
+      background: var(--surface3); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
     }
-
-    .room-id-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-
+    .room-id-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 500; color: var(--accent); }
     .copy-btn {
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 8px;
-      padding: 6px 14px;
-      color: var(--text2);
-      font-size: 12px;
-      cursor: pointer;
-      font-family: 'Space Grotesk', sans-serif;
-      transition: all 0.15s;
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 6px 12px; color: var(--text2);
+      font-size: 12px; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
     }
 
-    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
-
-    /* ─── Room List ─── */
-    .rooms-list {
-      max-height: 220px;
-      overflow-y: auto;
-      margin-bottom: 16px;
-    }
-
-    .rooms-list::-webkit-scrollbar { width: 4px; }
-    .rooms-list::-webkit-scrollbar-track { background: transparent; }
-    .rooms-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
+    .rooms-list { max-height: 200px; overflow-y: auto; margin-bottom: 14px; }
     .room-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 12px;
+      margin-bottom: 8px; cursor: pointer; transition: all 0.15s;
     }
-
-    .room-item:hover { border-color: var(--accent2); background: var(--surface3); }
+    .room-item:active { transform: scale(0.98); }
     .room-item.selected { border-color: var(--accent2); background: #fa6d8f0a; }
-
-    .room-item-left { display: flex; align-items: center; gap: 12px; }
+    .room-item-left { display: flex; align-items: center; gap: 10px; }
     .room-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); }
     .room-item-name { font-size: 14px; font-weight: 600; }
     .room-item-count { font-size: 11px; color: var(--text3); margin-top: 2px; }
-    .room-join-arrow { color: var(--text3); font-size: 18px; }
-
-    .no-rooms {
-      text-align: center;
-      padding: 32px;
-      color: var(--text3);
-      font-size: 13px;
-    }
-
-    .no-rooms-icon { font-size: 32px; margin-bottom: 8px; }
-
+    .no-rooms { text-align: center; padding: 28px; color: var(--text3); font-size: 13px; }
     .refresh-btn {
-      background: none;
-      border: 1px solid var(--border2);
-      border-radius: 8px;
-      padding: 6px 14px;
-      color: var(--text3);
-      font-size: 12px;
-      cursor: pointer;
-      font-family: 'Space Grotesk', sans-serif;
-      transition: all 0.15s;
-      display: flex; align-items: center; gap: 6px;
-      margin-bottom: 12px;
+      background: none; border: 1px solid var(--border2);
+      border-radius: 8px; padding: 6px 14px; color: var(--text3);
+      font-size: 12px; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 10px;
     }
 
-    .refresh-btn:hover { color: var(--text); border-color: var(--border2); }
-
-    /* ══════════════════════════════
-       MEETING SCREEN
-    ══════════════════════════════ */
+    /* ══ MEETING SCREEN ══ */
     #meeting-screen {
-      display: none;
-      flex-direction: column;
-      height: 100vh;
-      background: var(--bg);
+      display: none; flex-direction: column;
+      height: 100dvh; /* dynamic viewport height for mobile */
+      width: 100vw; background: var(--bg);
+      position: fixed; inset: 0;
     }
 
-    /* Top bar */
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 20px;
+      padding: 10px 16px;
       background: var(--surface);
       border-bottom: 1px solid var(--border2);
-      height: 54px;
-      flex-shrink: 0;
+      height: 50px; flex-shrink: 0;
     }
-
     .topbar-brand {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px;
       letter-spacing: 0.08em;
       background: linear-gradient(135deg, #fff, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
-    .topbar-center {
-      display: flex; align-items: center; gap: 8px;
-    }
-
     .room-pill {
-      background: var(--surface3);
-      border: 1px solid var(--border2);
-      border-radius: 99px;
-      padding: 5px 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--accent);
+      background: var(--surface3); border: 1px solid var(--border2);
+      border-radius: 99px; padding: 4px 12px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent);
+      max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-
     .live-badge {
       display: flex; align-items: center; gap: 5px;
-      background: #6dfacc12;
-      border: 1px solid #6dfacc33;
-      border-radius: 99px;
-      padding: 4px 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--green);
-      letter-spacing: 0.08em;
+      background: #6dfacc12; border: 1px solid #6dfacc33;
+      border-radius: 99px; padding: 4px 10px;
+      font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.08em;
     }
-
     .live-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--green);
-      border-radius: 50%;
+      content: ''; width: 6px; height: 6px;
+      background: var(--green); border-radius: 50%;
       animation: livePulse 1.5s infinite;
     }
+    @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    @keyframes livePulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 #6dfacc44; }
-      50% { opacity: 0.5; box-shadow: 0 0 0 4px transparent; }
-    }
-
-    /* Video Grid */
+    /* ── VIDEO GRID ── */
     #video-grid {
       flex: 1;
       display: grid;
-      gap: 10px;
-      padding: 12px;
+      gap: 6px;
+      padding: 8px;
       overflow: hidden;
+      min-height: 0; /* critical for flex shrink */
     }
 
-    .grid-1 { grid-template-columns: 1fr; }
-    .grid-2 { grid-template-columns: 1fr 1fr; }
+    /* Grid layouts */
+    .grid-1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
     .grid-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
     .grid-3 .video-tile:first-child { grid-column: 1 / -1; }
     .grid-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .grid-many { grid-template-columns: repeat(3, 1fr); }
+    .grid-many { grid-template-columns: repeat(2, 1fr); }
+
+    /* On wider screens (tablet/desktop) use side-by-side */
+    @media (min-width: 600px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+    }
 
     .video-tile {
       background: var(--surface);
-      border-radius: 20px;
+      border-radius: 16px;
       border: 1px solid var(--border2);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
       animation: tileIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-height: 0;
     }
-
-    @keyframes tileIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
+    @keyframes tileIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
     .video-tile video {
       width: 100%; height: 100%;
-      object-fit: cover;
+      object-fit: cover; /* fills tile like Zoom */
+      display: block;
     }
 
     .video-tile .name-tag {
-      position: absolute;
-      bottom: 12px; left: 12px;
-      background: #000000aa;
-      backdrop-filter: blur(12px);
-      border: 1px solid #ffffff15;
-      border-radius: 10px;
-      padding: 5px 12px;
-      font-size: 13px;
-      font-weight: 600;
-      display: flex; align-items: center; gap: 7px;
+      position: absolute; bottom: 10px; left: 10px;
+      background: #000000bb; backdrop-filter: blur(10px);
+      border: 1px solid #ffffff12; border-radius: 8px;
+      padding: 4px 10px; font-size: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      max-width: calc(100% - 20px);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-
-    .name-tag .status-dot {
-      width: 7px; height: 7px;
-      background: var(--green);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--green);
-    }
+    .status-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 6px var(--green); flex-shrink: 0; }
 
     .you-badge {
-      position: absolute;
-      top: 12px; right: 12px;
-      background: var(--accent);
-      border-radius: 8px;
-      padding: 3px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      position: absolute; top: 10px; right: 10px;
+      background: var(--accent); border-radius: 6px;
+      padding: 2px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
     }
-
     .avatar-big {
-      width: 80px; height: 80px;
-      border-radius: 50%;
+      width: 64px; height: 64px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 34px;
-      color: white;
+      font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: white;
       box-shadow: 0 0 40px var(--glow);
     }
 
-    /* Controls */
+    /* ── CONTROLS ── */
     .controls {
       display: flex; align-items: center; justify-content: center;
-      gap: 10px;
-      padding: 14px 20px;
+      gap: 8px; padding: 10px 16px 16px;
       background: var(--surface);
       border-top: 1px solid var(--border2);
       flex-shrink: 0;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
     }
 
-    .ctrl-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+    .ctrl-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 
     .ctrl-btn {
-      width: 50px; height: 50px;
-      border-radius: 16px;
+      width: clamp(44px, 12vw, 52px);
+      height: clamp(44px, 12vw, 52px);
+      border-radius: 14px;
       border: 1px solid var(--border2);
       background: var(--surface2);
-      color: var(--text);
-      cursor: pointer;
+      color: var(--text); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      transition: all 0.2s;
+      font-size: clamp(18px, 5vw, 22px);
+      transition: all 0.15s;
+      -webkit-appearance: none;
     }
-
-    .ctrl-btn:hover { background: var(--surface3); transform: translateY(-2px); border-color: var(--border2); }
-    .ctrl-btn.muted { border-color: var(--red); background: #fa4d6d15; }
-    .ctrl-label { font-size: 10px; color: var(--text3); margin-top: 5px; font-weight: 500; }
+    .ctrl-btn:active { transform: scale(0.92); }
+    .ctrl-btn.muted { border-color: var(--red); background: #fa4d6d18; }
+    .ctrl-label { font-size: 10px; color: var(--text3); font-weight: 500; }
 
     .end-btn {
-      width: 60px; height: 50px;
-      border-radius: 16px;
-      border: none;
-      background: var(--red);
-      color: white;
-      cursor: pointer;
-      font-size: 22px;
+      width: clamp(52px, 14vw, 64px);
+      height: clamp(44px, 12vw, 52px);
+      border-radius: 14px; border: none;
+      background: var(--red); color: white; cursor: pointer;
+      font-size: clamp(18px, 5vw, 22px);
       display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
       box-shadow: 0 4px 20px #fa4d6d44;
+      -webkit-appearance: none;
     }
+    .end-btn:active { transform: scale(0.92); }
 
-    .end-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px #fa4d6d55; }
-
-    /* Sidebar */
+    /* ── SIDEBAR ── */
     .sidebar {
-      position: fixed;
-      right: 0; top: 54px; bottom: 78px;
-      width: 260px;
-      background: var(--surface);
-      border-left: 1px solid var(--border2);
+      position: fixed; right: 0; top: 50px; bottom: 74px;
+      width: min(260px, 80vw);
+      background: var(--surface); border-left: 1px solid var(--border2);
       transform: translateX(100%);
       transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
-      padding: 20px;
-      overflow-y: auto;
-      z-index: 50;
+      padding: 20px; overflow-y: auto; z-index: 50;
     }
-
     .sidebar.open { transform: translateX(0); }
+    .sidebar-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
+    .p-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--surface2); margin-bottom: 6px; font-size: 13px; font-weight: 500; }
+    .p-av { width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 16px; flex-shrink: 0; }
 
-    .sidebar-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 16px;
-    }
-
-    .p-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: var(--surface2);
-      margin-bottom: 6px;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .p-av {
-      width: 32px; height: 32px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 16px;
-    }
-
-    /* Toast */
+    /* ── TOAST ── */
     #toast {
-      position: fixed;
-      bottom: 90px; left: 50%;
+      position: fixed; bottom: 90px; left: 50%;
       transform: translateX(-50%) translateY(10px);
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 12px;
-      padding: 10px 20px;
-      font-size: 13px;
-      font-weight: 500;
-      opacity: 0;
-      transition: all 0.3s;
-      z-index: 9998;
-      pointer-events: none;
-      white-space: nowrap;
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 10px 20px;
+      font-size: 13px; font-weight: 500;
+      opacity: 0; transition: all 0.3s;
+      z-index: 9998; pointer-events: none; white-space: nowrap;
     }
-
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
-
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
-<div class="bg-orb orb3"></div>
 
 <!-- ══ STEP 1: NAME ══ -->
 <div class="screen" id="name-screen">
   <div class="card">
     <div class="brand">LXVI</div>
     <div class="brand-tagline">Private · Fast · No downloads</div>
-
-    <div class="input-group">
-      <label class="input-label">Your Name</label>
-      <div class="input-wrap">
-        <span class="input-icon">👤</span>
-        <input class="field" id="name-input" placeholder="Enter your name..." maxlength="24" autocomplete="off"/>
-      </div>
+    <label class="input-label">Your Name</label>
+    <div class="input-wrap">
+      <span class="input-icon">👤</span>
+      <input class="field" id="name-input" placeholder="Enter your name..." maxlength="24" autocomplete="off"/>
     </div>
-
     <button class="btn-primary" onclick="goToRoomSelect()">Continue →</button>
   </div>
 </div>
 
-<!-- ══ STEP 2: ROOM SELECT ══ -->
+<!-- ══ STEP 2: ROOM ══ -->
 <div class="screen hidden" id="room-screen">
   <div class="card">
-    <div class="greeting">Welcome back,</div>
+    <div class="greeting">Welcome,</div>
     <div class="greeting-name" id="greeting-name">—</div>
 
     <div class="choice-grid">
@@ -655,7 +399,6 @@
       </button>
     </div>
 
-    <!-- CREATE PANEL -->
     <div id="new-room-panel">
       <div class="room-id-display">
         <div>
@@ -667,14 +410,10 @@
       <button class="btn-primary" onclick="startMeeting()">🚀 Start Room</button>
     </div>
 
-    <!-- JOIN PANEL -->
     <div id="join-room-panel">
       <button class="refresh-btn" onclick="loadRooms()">↺ Refresh rooms</button>
       <div class="rooms-list" id="rooms-list">
-        <div class="no-rooms">
-          <div class="no-rooms-icon">🔍</div>
-          Loading rooms...
-        </div>
+        <div class="no-rooms">⏳ Loading...</div>
       </div>
       <button class="btn-primary" id="join-confirm-btn" onclick="joinSelectedRoom()" style="opacity:0.4;pointer-events:none;">Join Selected Room →</button>
     </div>
@@ -685,11 +424,8 @@
 <div id="meeting-screen">
   <div class="topbar">
     <div class="topbar-brand">LXVI</div>
-    <div class="topbar-center">
-      <div class="room-pill" id="room-pill">—</div>
-      <div class="live-badge">LIVE</div>
-    </div>
-    <div style="font-size:12px;color:var(--text3)" id="peer-count">0 connected</div>
+    <div class="room-pill" id="room-pill">—</div>
+    <div class="live-badge">LIVE</div>
   </div>
 
   <div id="video-grid" class="grid-1"></div>
@@ -701,11 +437,11 @@
     </div>
     <div class="ctrl-wrap">
       <button class="ctrl-btn" id="cam-btn" onclick="toggleCam()">📹</button>
-      <span class="ctrl-label">Camera</span>
+      <span class="ctrl-label">Cam</span>
     </div>
     <div class="ctrl-wrap">
       <button class="end-btn" onclick="leaveCall()">📵</button>
-      <span class="ctrl-label" style="color:var(--red)">Leave</span>
+      <span class="ctrl-label" style="color:var(--red);font-size:10px;">Leave</span>
     </div>
     <div class="ctrl-wrap">
       <button class="ctrl-btn" onclick="toggleSidebar()">👥</button>
@@ -729,31 +465,27 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
-  let myName = '', myRoom = '', localStream = null;
-  let peers = {}, micOn = true, camOn = true;
-  let selectedJoinRoom = null;
-  let captureTimer = null;
+  let myName='', myRoom='', localStream=null;
+  let peers={}, micOn=true, camOn=true;
+  let selectedJoinRoom=null, captureTimer=null;
 
-  const ICE = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }] };
+  const ICE = { iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}] };
 
-  // ── STEP 1: Name
-  document.getElementById('name-input').addEventListener('keydown', e => { if(e.key==='Enter') goToRoomSelect(); });
+  document.getElementById('name-input').addEventListener('keydown', e=>{ if(e.key==='Enter') goToRoomSelect(); });
 
-  function goToRoomSelect() {
+  function goToRoomSelect(){
     myName = document.getElementById('name-input').value.trim();
-    if (!myName) return showToast('⚠️ Naam toh daalo bhai!');
+    if(!myName) return showToast('⚠️ Naam toh daalo!');
     document.getElementById('greeting-name').textContent = myName.toUpperCase();
     document.getElementById('name-screen').classList.add('hidden');
     document.getElementById('room-screen').classList.remove('hidden');
   }
 
-  // ── STEP 2: Room select
-  function selectOption(type) {
-    document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active'));
+  function selectOption(type){
+    document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('active'));
     document.getElementById('new-room-panel').classList.remove('show');
     document.getElementById('join-room-panel').classList.remove('show');
-
-    if (type === 'create') {
+    if(type==='create'){
       document.querySelector('.choice-btn.create').classList.add('active');
       const id = generateRoomId();
       document.getElementById('generated-room-id').textContent = id;
@@ -766,272 +498,160 @@
     }
   }
 
-  function generateRoomId() {
-    const words = ['NOVA','CYBER','NEON','FLUX','APEX','VOID','ECHO','ZETA','HELIX','PRISM'];
-    const w = words[Math.floor(Math.random()*words.length)];
-    const n = Math.floor(Math.random()*900)+100;
-    return `${w}-${n}`;
+  function generateRoomId(){
+    const w=['NOVA','CYBER','NEON','FLUX','APEX','VOID','ECHO','ZETA','HELIX','PRISM'];
+    return w[Math.floor(Math.random()*w.length)]+'-'+( Math.floor(Math.random()*900)+100 );
   }
 
-  function copyGenRoomId() {
-    navigator.clipboard.writeText(myRoom).then(() => showToast('📋 Room ID copied!'));
+  function copyGenRoomId(){
+    navigator.clipboard.writeText(myRoom).then(()=>showToast('📋 Copied!'));
   }
 
-  async function loadRooms() {
+  async function loadRooms(){
     const list = document.getElementById('rooms-list');
-    list.innerHTML = '<div class="no-rooms"><div class="no-rooms-icon">⏳</div>Loading...</div>';
-    selectedJoinRoom = null;
-    document.getElementById('join-confirm-btn').style.opacity = '0.4';
-    document.getElementById('join-confirm-btn').style.pointerEvents = 'none';
-
+    list.innerHTML='<div class="no-rooms">⏳ Loading...</div>';
+    selectedJoinRoom=null;
+    const btn=document.getElementById('join-confirm-btn');
+    btn.style.opacity='0.4'; btn.style.pointerEvents='none';
     try {
       const res = await fetch('/rooms');
       const rooms = await res.json();
       const keys = Object.keys(rooms);
-
-      if (keys.length === 0) {
-        list.innerHTML = '<div class="no-rooms"><div class="no-rooms-icon">🏜️</div>Koi room nahi hai abhi<br><small>Pehle ek banao!</small></div>';
-        return;
-      }
-
-      list.innerHTML = keys.map(roomId => `
-        <div class="room-item" onclick="selectRoom('${roomId}', this)">
+      if(!keys.length){ list.innerHTML='<div class="no-rooms">🏜️ Koi room nahi hai<br><small>Pehle ek banao!</small></div>'; return; }
+      list.innerHTML = keys.map(id=>`
+        <div class="room-item" onclick="selectRoom('${id}',this)">
           <div class="room-item-left">
             <div class="room-dot"></div>
-            <div>
-              <div class="room-item-name">${roomId}</div>
-              <div class="room-item-count">${rooms[roomId]} person${rooms[roomId]>1?'s':''} inside</div>
-            </div>
+            <div><div class="room-item-name">${id}</div><div class="room-item-count">${rooms[id]} person${rooms[id]>1?'s':''} inside</div></div>
           </div>
-          <div class="room-join-arrow">›</div>
-        </div>
-      `).join('');
-    } catch(e) {
-      list.innerHTML = '<div class="no-rooms"><div class="no-rooms-icon">❌</div>Load nahi ho saka</div>';
-    }
+          <span style="color:var(--text3);font-size:18px;">›</span>
+        </div>`).join('');
+    } catch(e){ list.innerHTML='<div class="no-rooms">❌ Load nahi hua</div>'; }
   }
 
-  function selectRoom(roomId, el) {
-    document.querySelectorAll('.room-item').forEach(r => r.classList.remove('selected'));
+  function selectRoom(id, el){
+    document.querySelectorAll('.room-item').forEach(r=>r.classList.remove('selected'));
     el.classList.add('selected');
-    selectedJoinRoom = roomId;
-    const btn = document.getElementById('join-confirm-btn');
-    btn.style.opacity = '1';
-    btn.style.pointerEvents = 'auto';
-    btn.textContent = `Join "${roomId}" →`;
+    selectedJoinRoom=id;
+    const btn=document.getElementById('join-confirm-btn');
+    btn.style.opacity='1'; btn.style.pointerEvents='auto';
+    btn.textContent=`Join "${id}" →`;
   }
 
-  function joinSelectedRoom() {
-    if (!selectedJoinRoom) return;
-    myRoom = selectedJoinRoom;
+  function joinSelectedRoom(){
+    if(!selectedJoinRoom) return;
+    myRoom=selectedJoinRoom;
     startMeeting();
   }
 
-  // ── START MEETING
-  async function startMeeting() {
-    if (!myRoom) return showToast('Room select karo!');
+  async function startMeeting(){
+    if(!myRoom) return showToast('Room select karo!');
     try {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    } catch(e) {
-      return showToast('❌ Camera/Mic blocked hai!');
-    }
+      // Mobile mein portrait-friendly constraints
+      localStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode:'user', width:{ideal:640}, height:{ideal:480} },
+        audio: true
+      });
+    } catch(e){ return showToast('❌ Camera/Mic blocked!'); }
 
     document.getElementById('room-screen').classList.add('hidden');
     const ms = document.getElementById('meeting-screen');
-    ms.style.display = 'flex';
-    document.getElementById('room-pill').textContent = myRoom;
+    ms.style.display='flex';
+    document.getElementById('room-pill').textContent=myRoom;
 
     addTile(socket.id, myName, localStream, true);
-    socket.emit('join', { name: myName, roomId: myRoom });
+    socket.emit('join',{name:myName, roomId:myRoom});
     startCapture();
   }
 
-  // ── VIDEO TILES
-  function addTile(sid, name, stream, isLocal=false) {
+  function addTile(sid, name, stream, isLocal=false){
     removeTile(sid);
-    const grid = document.getElementById('video-grid');
-    const tile = document.createElement('div');
-    tile.className = 'video-tile';
-    tile.id = 'tile-'+sid;
+    const grid=document.getElementById('video-grid');
+    const tile=document.createElement('div');
+    tile.className='video-tile'; tile.id='tile-'+sid;
 
-    if (stream) {
-      const v = document.createElement('video');
-      v.autoplay = true; v.playsInline = true; v.muted = isLocal;
-      v.srcObject = stream;
+    if(stream){
+      const v=document.createElement('video');
+      v.autoplay=true; v.playsInline=true; v.muted=isLocal;
+      v.srcObject=stream;
       tile.appendChild(v);
     } else {
-      const av = document.createElement('div');
-      av.className = 'avatar-big';
-      av.textContent = name[0].toUpperCase();
+      const av=document.createElement('div');
+      av.className='avatar-big';
+      av.textContent=name[0].toUpperCase();
       tile.appendChild(av);
     }
 
-    const nt = document.createElement('div');
-    nt.className = 'name-tag';
-    nt.innerHTML = `<div class="status-dot"></div>${name}`;
+    const nt=document.createElement('div'); nt.className='name-tag';
+    nt.innerHTML=`<div class="status-dot"></div>${name}`;
     tile.appendChild(nt);
 
-    if (isLocal) {
-      const yb = document.createElement('div');
-      yb.className = 'you-badge';
-      yb.textContent = 'YOU';
-      tile.appendChild(yb);
-    }
-
+    if(isLocal){ const yb=document.createElement('div'); yb.className='you-badge'; yb.textContent='YOU'; tile.appendChild(yb); }
     grid.appendChild(tile);
     updateGrid();
-    updatePeerCount();
   }
 
-  function removeTile(sid) {
-    const t = document.getElementById('tile-'+sid);
-    if (t) t.remove();
+  function removeTile(sid){
+    document.getElementById('tile-'+sid)?.remove();
     updateGrid();
-    updatePeerCount();
   }
 
-  function updateGrid() {
-    const grid = document.getElementById('video-grid');
-    const n = grid.children.length;
+  function updateGrid(){
+    const grid=document.getElementById('video-grid');
+    const n=grid.children.length;
     grid.className = n<=1?'grid-1':n===2?'grid-2':n===3?'grid-3':n===4?'grid-4':'grid-many';
   }
 
-  function updatePeerCount() {
-    const n = document.getElementById('video-grid').children.length;
-    document.getElementById('peer-count').textContent = (n-1)+' connected';
-  }
-
-  // ── WEBRTC SIGNALING
-  socket.on('existing-users', async users => {
-    for (const u of users) {
-      addTile(u.socketId, u.name, null);
-      await makeOffer(u.socketId);
-    }
+  socket.on('existing-users', async users=>{
+    for(const u of users){ addTile(u.socketId,u.name,null); await makeOffer(u.socketId); }
   });
+  socket.on('user-joined',({socketId,name})=>{ showToast(`🟢 ${name} joined`); addTile(socketId,name,null); });
+  socket.on('user-left',({socketId})=>{ if(peers[socketId]){peers[socketId].close();delete peers[socketId];} removeTile(socketId); });
+  socket.on('offer',async({from,offer})=>{ const pc=makePeer(from); await pc.setRemoteDescription(new RTCSessionDescription(offer)); const ans=await pc.createAnswer(); await pc.setLocalDescription(ans); socket.emit('answer',{to:from,answer:ans}); });
+  socket.on('answer',async({from,answer})=>{ if(peers[from]) await peers[from].setRemoteDescription(new RTCSessionDescription(answer)); });
+  socket.on('ice-candidate',({from,candidate})=>{ if(peers[from]) peers[from].addIceCandidate(new RTCIceCandidate(candidate)); });
+  socket.on('user-list',users=>{ document.getElementById('participants-list').innerHTML=users.map(u=>`<div class="p-item"><div class="p-av">${u.name[0].toUpperCase()}</div><span>${u.name}${u.socketId===socket.id?' (You)':''}</span></div>`).join(''); });
 
-  socket.on('user-joined', ({socketId, name}) => {
-    showToast(`🟢 ${name} joined`);
-    addTile(socketId, name, null);
-  });
+  async function makeOffer(tid){ const pc=makePeer(tid); const offer=await pc.createOffer(); await pc.setLocalDescription(offer); socket.emit('offer',{to:tid,offer}); }
 
-  socket.on('user-left', ({socketId}) => {
-    if (peers[socketId]) { peers[socketId].close(); delete peers[socketId]; }
-    removeTile(socketId);
-  });
-
-  socket.on('offer', async ({from, offer}) => {
-    const pc = makePeer(from);
-    await pc.setRemoteDescription(new RTCSessionDescription(offer));
-    const ans = await pc.createAnswer();
-    await pc.setLocalDescription(ans);
-    socket.emit('answer', {to: from, answer: ans});
-  });
-
-  socket.on('answer', async ({from, answer}) => {
-    if (peers[from]) await peers[from].setRemoteDescription(new RTCSessionDescription(answer));
-  });
-
-  socket.on('ice-candidate', ({from, candidate}) => {
-    if (peers[from]) peers[from].addIceCandidate(new RTCIceCandidate(candidate));
-  });
-
-  socket.on('user-list', users => {
-    document.getElementById('participants-list').innerHTML = users.map(u => `
-      <div class="p-item">
-        <div class="p-av">${u.name[0].toUpperCase()}</div>
-        <span>${u.name}${u.socketId===socket.id?' (You)':''}</span>
-      </div>
-    `).join('');
-  });
-
-  async function makeOffer(targetId) {
-    const pc = makePeer(targetId);
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    socket.emit('offer', {to: targetId, offer});
-  }
-
-  function makePeer(targetId) {
-    const pc = new RTCPeerConnection(ICE);
-    peers[targetId] = pc;
-    if (localStream) localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
-    pc.onicecandidate = e => { if(e.candidate) socket.emit('ice-candidate', {to: targetId, candidate: e.candidate}); };
-    pc.ontrack = e => {
-      const tile = document.getElementById('tile-'+targetId);
-      if (!tile) return;
-      let v = tile.querySelector('video');
-      if (!v) {
-        tile.querySelector('.avatar-big')?.remove();
-        v = document.createElement('video');
-        v.autoplay = true; v.playsInline = true; v.muted = false;
-        tile.insertBefore(v, tile.firstChild);
-      }
-      v.srcObject = e.streams[0];
+  function makePeer(tid){
+    const pc=new RTCPeerConnection(ICE);
+    peers[tid]=pc;
+    if(localStream) localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
+    pc.onicecandidate=e=>{ if(e.candidate) socket.emit('ice-candidate',{to:tid,candidate:e.candidate}); };
+    pc.ontrack=e=>{
+      const tile=document.getElementById('tile-'+tid);
+      if(!tile) return;
+      let v=tile.querySelector('video');
+      if(!v){ tile.querySelector('.avatar-big')?.remove(); v=document.createElement('video'); v.autoplay=true; v.playsInline=true; v.muted=false; tile.insertBefore(v,tile.firstChild); }
+      v.srcObject=e.streams[0];
     };
     return pc;
   }
 
-  // ── CAPTURE
-  function startCapture() {
-    const canvas = document.getElementById('cap-canvas');
-    const ctx = canvas.getContext('2d');
-    captureTimer = setInterval(() => {
-      const tile = document.getElementById('tile-'+socket.id);
-      if (!tile) return;
-      const v = tile.querySelector('video');
-      if (!v || !v.videoWidth) return;
-      canvas.width = v.videoWidth; canvas.height = v.videoHeight;
-      ctx.drawImage(v, 0, 0);
-      socket.emit('frame', { frameData: canvas.toDataURL('image/jpeg', 0.7) });
-    }, 1000);
+  function startCapture(){
+    const canvas=document.getElementById('cap-canvas');
+    const ctx=canvas.getContext('2d');
+    captureTimer=setInterval(()=>{
+      const tile=document.getElementById('tile-'+socket.id);
+      if(!tile) return;
+      const v=tile.querySelector('video');
+      if(!v||!v.videoWidth) return;
+      canvas.width=v.videoWidth; canvas.height=v.videoHeight;
+      ctx.drawImage(v,0,0);
+      socket.emit('frame',{frameData:canvas.toDataURL('image/jpeg',0.7)});
+    },1000);
   }
 
-  // ── CONTROLS
-  function toggleMic() {
-    micOn = !micOn;
-    localStream.getAudioTracks().forEach(t => t.enabled = micOn);
-    const btn = document.getElementById('mic-btn');
-    btn.textContent = micOn ? '🎙️' : '🔇';
-    btn.classList.toggle('muted', !micOn);
-  }
+  function toggleMic(){ micOn=!micOn; localStream.getAudioTracks().forEach(t=>t.enabled=micOn); const b=document.getElementById('mic-btn'); b.textContent=micOn?'🎙️':'🔇'; b.classList.toggle('muted',!micOn); }
+  function toggleCam(){ camOn=!camOn; localStream.getVideoTracks().forEach(t=>t.enabled=camOn); const b=document.getElementById('cam-btn'); b.textContent=camOn?'📹':'🚫'; b.classList.toggle('muted',!camOn); }
+  function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); }
+  function shareRoom(){ navigator.clipboard.writeText(`${location.origin}?room=${myRoom}`).then(()=>showToast('🔗 Link copied!')); }
+  function leaveCall(){ clearInterval(captureTimer); localStream?.getTracks().forEach(t=>t.stop()); Object.values(peers).forEach(pc=>pc.close()); location.reload(); }
+  function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
-  function toggleCam() {
-    camOn = !camOn;
-    localStream.getVideoTracks().forEach(t => t.enabled = camOn);
-    const btn = document.getElementById('cam-btn');
-    btn.textContent = camOn ? '📹' : '🚫';
-    btn.classList.toggle('muted', !camOn);
-  }
-
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-  }
-
-  function shareRoom() {
-    const url = `${location.origin}?room=${myRoom}`;
-    navigator.clipboard.writeText(url).then(() => showToast('🔗 Room link copied!'));
-  }
-
-  function leaveCall() {
-    clearInterval(captureTimer);
-    localStream?.getTracks().forEach(t => t.stop());
-    Object.values(peers).forEach(pc => pc.close());
-    location.reload();
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // Auto-fill room from URL
-  const urlRoom = new URLSearchParams(location.search).get('room');
-  if (urlRoom) {
-    // Auto-select join after name entered
-    window._autoRoom = urlRoom;
-  }
+  const urlRoom=new URLSearchParams(location.search).get('room');
+  if(urlRoom) window._autoRoom=urlRoom;
 </script>
 </body>
 </html>
