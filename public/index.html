@@ -13,420 +13,609 @@
       --b1:#ffffff08;--b2:#ffffff14;--b3:#ffffff22;
       --p:#8875ff;--p2:#a896ff;--pk:#ff6b9d;--tl:#00f5c4;--yw:#ffd166;--rd:#ff4d6d;
       --tx:#eeeaff;--t2:#9993bb;--t3:#4a4468;
-      --glow:0 0 40px #8875ff28;--radius:20px;
+      --glow:0 0 40px #8875ff28;
     }
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     html,body{height:100%;width:100%;background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;overflow:hidden;position:fixed;}
 
-    .mesh{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;}
-    .mesh span{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.6;animation:meshFloat 12s ease-in-out infinite;}
-    .mesh span:nth-child(1){width:500px;height:500px;background:#8875ff18;top:-150px;left:-150px;animation-delay:0s;}
+    /* MESH */
+    .mesh{position:fixed;inset:0;pointer-events:none;z-index:0;}
+    .mesh span{position:absolute;border-radius:50%;filter:blur(100px);animation:mf 12s ease-in-out infinite;}
+    .mesh span:nth-child(1){width:500px;height:500px;background:#8875ff18;top:-150px;left:-150px;}
     .mesh span:nth-child(2){width:400px;height:400px;background:#ff6b9d12;bottom:-100px;right:-100px;animation-delay:-4s;}
     .mesh span:nth-child(3){width:300px;height:300px;background:#00f5c410;top:40%;left:40%;animation-delay:-8s;}
-    @keyframes meshFloat{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.05);}66%{transform:translate(-20px,30px) scale(0.95);}}
+    @keyframes mf{0%,100%{transform:translate(0,0)scale(1);}33%{transform:translate(30px,-20px)scale(1.05);}66%{transform:translate(-20px,30px)scale(0.95);}}
 
-    .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:10;transition:opacity 0.4s cubic-bezier(0.4,0,0.2,1),transform 0.4s cubic-bezier(0.4,0,0.2,1);}
-    .screen.hidden{opacity:0;pointer-events:none;transform:scale(0.96) translateY(8px);}
+    /* SCREENS */
+    .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:10;transition:opacity 0.4s,transform 0.4s;}
+    .screen.hidden{opacity:0;pointer-events:none;transform:scale(0.96)translateY(8px);}
 
-    .card{background:linear-gradient(135deg,var(--s1) 0%,var(--s2) 100%);border:1px solid var(--b2);border-radius:28px;padding:40px 32px;width:100%;max-width:400px;position:relative;overflow:hidden;box-shadow:var(--glow),0 60px 100px #00000090,inset 0 1px 0 #ffffff0a;}
-    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--p) 40%,var(--pk) 70%,transparent 100%);opacity:0.8;}
-
-    .brand-wrap{margin-bottom:32px;}
-    .brand{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,14vw,64px);letter-spacing:0.12em;line-height:0.9;background:linear-gradient(135deg,#fff 0%,var(--p2) 50%,var(--pk) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;}
-    .brand-sub{font-size:10px;color:var(--t3);letter-spacing:0.25em;text-transform:uppercase;font-weight:600;margin-top:6px;}
-
-    .field-group{margin-bottom:18px;}
-    .field-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;display:block;}
-    .field-wrap{position:relative;}
-    .field-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;opacity:0.7;}
+    /* CARD */
+    .card{background:linear-gradient(135deg,var(--s1),var(--s2));border:1px solid var(--b2);border-radius:28px;padding:40px 32px;width:100%;max-width:400px;position:relative;overflow:hidden;box-shadow:var(--glow),0 60px 100px #00000090,inset 0 1px 0 #ffffff0a;}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--p) 40%,var(--pk) 70%,transparent);}
+    .brand{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,14vw,64px);letter-spacing:0.12em;line-height:0.9;background:linear-gradient(135deg,#fff,var(--p2) 50%,var(--pk));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;}
+    .brand-sub{font-size:10px;color:var(--t3);letter-spacing:0.25em;text-transform:uppercase;font-weight:600;margin-top:6px;margin-bottom:32px;}
+    .fl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;display:block;}
+    .fw{position:relative;margin-bottom:16px;}
+    .fi{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
     .field{width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:14px;padding:14px 16px 14px 44px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;outline:none;transition:all 0.2s;-webkit-appearance:none;}
-    .field:focus{border-color:var(--p);box-shadow:0 0 0 3px #8875ff22;background:var(--s4);}
+    .field:focus{border-color:var(--p);box-shadow:0 0 0 3px #8875ff22;}
     .field::placeholder{color:var(--t3);}
+    .btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;-webkit-appearance:none;transition:all 0.15s;position:relative;overflow:hidden;}
+    .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#ffffff14,transparent 60%);}
+    .btn-p{background:linear-gradient(135deg,var(--p),#6b5ce7);color:#fff;box-shadow:0 4px 24px #8875ff44;margin-top:4px;}
+    .btn-p:active{transform:scale(0.97);}
 
-    .btn{width:100%;border:none;border-radius:14px;padding:16px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;-webkit-appearance:none;transition:all 0.15s;letter-spacing:0.02em;position:relative;overflow:hidden;}
-    .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#ffffff14 0%,transparent 60%);}
-    .btn-grad{background:linear-gradient(135deg,var(--p),#6b5ce7);color:#fff;box-shadow:0 4px 24px #8875ff44;margin-top:4px;}
-    .btn-grad:active{transform:scale(0.97);}
-    .btn-outline{background:var(--s3);color:var(--t2);border:1px solid var(--b2);}
-    .btn-outline:active{transform:scale(0.97);}
+    /* ROOM SCREEN */
+    .greet-l{font-size:11px;color:var(--t3);font-weight:600;margin-bottom:2px;}
+    .greet-n{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,10vw,48px);letter-spacing:0.06em;background:linear-gradient(135deg,#fff,var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:24px;line-height:1;}
+    .cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+    .ch{background:var(--s3);border:1px solid var(--b2);border-radius:16px;padding:18px 14px;cursor:pointer;text-align:left;color:var(--tx);font-family:'Outfit',sans-serif;transition:all 0.2s;-webkit-appearance:none;}
+    .ch:active{transform:scale(0.96);}
+    .ch.sc{border-color:var(--p);background:#8875ff0e;}
+    .ch.sj{border-color:var(--pk);background:#ff6b9d0e;}
+    .ci{font-size:22px;margin-bottom:8px;display:block;}
+    .ct{font-size:13px;font-weight:700;margin-bottom:2px;}
+    .cd{font-size:11px;color:var(--t3);}
+    #np,#jp{display:none;}
+    #np.show,#jp.show{display:block;animation:fu 0.2s ease;}
+    @keyframes fu{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+    .rid-box{background:var(--s4);border:1px solid var(--b2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .rid-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:4px;font-weight:700;}
+    .rid-v{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--p2);}
+    .cp-btn{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:7px 14px;color:var(--t2);font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;}
+    .rscroll{max-height:200px;overflow-y:auto;margin-bottom:14px;}
+    .rscroll::-webkit-scrollbar{width:3px;}
+    .rscroll::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
+    .rrow{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--s3);border:1px solid var(--b1);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;}
+    .rrow.sel{border-color:var(--pk);background:#ff6b9d0a;}
+    .rrow-l{display:flex;align-items:center;gap:10px;}
+    .rdot{width:7px;height:7px;background:var(--tl);border-radius:50%;box-shadow:0 0 8px var(--tl);}
+    .rn{font-size:13px;font-weight:700;}
+    .rc{font-size:10px;color:var(--t3);margin-top:2px;}
+    .noroom{text-align:center;padding:28px;color:var(--t3);font-size:13px;}
 
-    .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-    .choice{background:var(--s3);border:1px solid var(--b2);border-radius:16px;padding:18px 14px;cursor:pointer;text-align:left;color:var(--tx);font-family:'Outfit',sans-serif;transition:all 0.2s;-webkit-appearance:none;}
-    .choice:active{transform:scale(0.96);}
-    .choice.sel-create{border-color:var(--p);background:#8875ff0e;box-shadow:0 0 20px #8875ff18;}
-    .choice.sel-join{border-color:var(--pk);background:#ff6b9d0e;box-shadow:0 0 20px #ff6b9d18;}
-    .choice-ico{font-size:22px;margin-bottom:8px;display:block;}
-    .choice-ttl{font-size:13px;font-weight:700;margin-bottom:2px;}
-    .choice-dsc{font-size:11px;color:var(--t3);}
+    /* ── MEETING ── */
+    #ms{display:none;flex-direction:column;height:100dvh;width:100vw;background:var(--bg);position:fixed;inset:0;z-index:5;}
 
-    #new-room-panel,#join-room-panel{display:none;}
-    #new-room-panel.show,#join-room-panel.show{display:block;animation:fadeUp 0.2s ease;}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-
-    .room-id-box{background:var(--s4);border:1px solid var(--b2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-    .room-id-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:4px;font-weight:700;}
-    .room-id-val{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--p2);letter-spacing:0.05em;}
-    .copy-btn{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:7px 14px;color:var(--t2);font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all 0.15s;}
-    .copy-btn:hover{color:var(--tx);border-color:var(--p);}
-
-    .rooms-scroll{max-height:190px;overflow-y:auto;margin-bottom:14px;}
-    .rooms-scroll::-webkit-scrollbar{width:3px;}
-    .rooms-scroll::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
-    .room-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--s3);border:1px solid var(--b1);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;}
-    .room-row:active{transform:scale(0.98);}
-    .room-row.sel{border-color:var(--pk);background:#ff6b9d0a;}
-    .room-row-l{display:flex;align-items:center;gap:10px;}
-    .r-dot{width:7px;height:7px;background:var(--tl);border-radius:50%;box-shadow:0 0 8px var(--tl);}
-    .r-name{font-size:13px;font-weight:700;}
-    .r-cnt{font-size:10px;color:var(--t3);margin-top:2px;}
-    .no-rooms{text-align:center;padding:28px;color:var(--t3);font-size:13px;}
-    .ref-btn{background:none;border:1px solid var(--b2);border-radius:8px;padding:6px 14px;color:var(--t3);font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;margin-bottom:10px;font-weight:600;}
-
-    .greet-lbl{font-size:11px;color:var(--t3);font-weight:600;margin-bottom:2px;}
-    .greet-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,10vw,48px);letter-spacing:0.06em;background:linear-gradient(135deg,#fff,var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:24px;line-height:1;}
-
-    /* MEETING */
-    #meeting-screen{display:none;flex-direction:column;height:100dvh;width:100vw;background:var(--bg);position:fixed;inset:0;z-index:5;}
-
-    .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:var(--s1);border-bottom:1px solid var(--b2);height:52px;flex-shrink:0;}
-    .tb-brand{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:0.12em;background:linear-gradient(135deg,#fff,var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .tb-center{display:flex;align-items:center;gap:8px;}
-    .tb-room{font-family:'DM Mono',monospace;font-size:11px;color:var(--p);background:var(--s3);border:1px solid var(--b2);border-radius:99px;padding:4px 14px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .tb-live{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--tl);letter-spacing:0.1em;}
-    .tb-live::before{content:'';width:6px;height:6px;background:var(--tl);border-radius:50%;animation:livep 1.5s infinite;}
-    @keyframes livep{0%,100%{opacity:1;box-shadow:0 0 0 0 #00f5c455;}60%{opacity:0.4;box-shadow:0 0 0 5px transparent;}}
-    .tb-timer{font-family:'DM Mono',monospace;font-size:11px;color:var(--t3);background:var(--s3);border:1px solid var(--b1);border-radius:99px;padding:4px 12px;}
+    /* TOPBAR */
+    .tb{display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--s1);border-bottom:1px solid var(--b2);height:50px;flex-shrink:0;gap:8px;}
+    .tb-brand{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.12em;background:linear-gradient(135deg,#fff,var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0;}
+    .tb-room{font-family:'DM Mono',monospace;font-size:10px;color:var(--p);background:var(--s3);border:1px solid var(--b2);border-radius:99px;padding:3px 10px;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;}
+    .tb-live{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:var(--tl);flex-shrink:0;}
+    .tb-live::before{content:'';width:5px;height:5px;background:var(--tl);border-radius:50%;animation:lp 1.5s infinite;}
+    @keyframes lp{0%,100%{opacity:1;}60%{opacity:0.3;}}
+    .tb-timer{font-family:'DM Mono',monospace;font-size:10px;color:var(--t3);flex-shrink:0;}
+    .tb-qual{width:8px;height:8px;border-radius:50%;background:var(--tl);flex-shrink:0;transition:background 1s;}
+    .tb-right{display:flex;align-items:center;gap:6px;}
 
     /* VIDEO GRID */
-    #vgrid{flex:1;display:grid;gap:6px;padding:8px;overflow:hidden;min-height:0;}
+    #vg{flex:1;display:grid;gap:5px;padding:6px;overflow:hidden;min-height:0;}
     .g1{grid-template-columns:1fr;grid-template-rows:1fr;}
     .g2{grid-template-columns:1fr;grid-template-rows:1fr 1fr;}
     .g3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
-    .g3 .vtile:first-child{grid-column:1/-1;}
+    .g3 .vt:first-child{grid-column:1/-1;}
     .g4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
     .gm{grid-template-columns:repeat(2,1fr);}
-    @media(min-width:600px){.g2{grid-template-columns:1fr 1fr;grid-template-rows:1fr;}}
-
-    .vtile{background:var(--s2);border-radius:18px;border:1px solid var(--b2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:0;animation:tileIn 0.35s cubic-bezier(0.34,1.4,0.64,1);}
-    @keyframes tileIn{from{opacity:0;transform:scale(0.88);}to{opacity:1;transform:scale(1);}}
-    .vtile video{width:100%;height:100%;object-fit:cover;display:block;}
-
-    .ntag{position:absolute;bottom:10px;left:10px;background:#000000cc;backdrop-filter:blur(12px);border:1px solid #ffffff10;border-radius:10px;padding:5px 12px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-    .ndot{width:6px;height:6px;border-radius:50%;background:var(--tl);box-shadow:0 0 6px var(--tl);flex-shrink:0;}
-    .you-tag{position:absolute;top:10px;right:10px;background:var(--p);border-radius:8px;padding:3px 10px;font-size:10px;font-weight:800;letter-spacing:0.06em;}
-
-    .cam-off{position:absolute;inset:0;background:linear-gradient(135deg,var(--s2),var(--s3));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
-    .cam-av{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pk));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:30px;color:#fff;box-shadow:0 0 30px #8875ff44;}
-    .cam-nm{font-size:13px;color:var(--t2);font-weight:600;}
+    @media(min-width:600px){
+      .g2{grid-template-columns:1fr 1fr;grid-template-rows:1fr;}
+      .g3{grid-template-columns:repeat(3,1fr);grid-template-rows:1fr;}
+      .g3 .vt:first-child{grid-column:auto;}
+    }
+    .vt{background:var(--s2);border-radius:16px;border:1px solid var(--b2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:0;animation:ti 0.3s cubic-bezier(0.34,1.4,0.64,1);transition:box-shadow 0.3s;}
+    .vt.spotlight{grid-column:1/-1;grid-row:1;border-color:var(--p);box-shadow:0 0 20px #8875ff44;}
+    .vt.speaking{border-color:var(--tl);box-shadow:0 0 12px #00f5c444;}
+    @keyframes ti{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+    .vt video{width:100%;height:100%;object-fit:cover;display:block;}
+    .ntag{position:absolute;bottom:8px;left:8px;background:#000000cc;backdrop-filter:blur(12px);border:1px solid #ffffff10;border-radius:9px;padding:4px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .ndot{width:5px;height:5px;border-radius:50%;background:var(--tl);box-shadow:0 0 5px var(--tl);flex-shrink:0;}
+    .ndot.muted{background:var(--rd);}
+    .you-tag{position:absolute;top:8px;right:8px;background:var(--p);border-radius:6px;padding:2px 8px;font-size:9px;font-weight:800;}
+    .host-tag{position:absolute;top:8px;left:8px;background:var(--yw);color:#000;border-radius:6px;padding:2px 8px;font-size:9px;font-weight:800;}
+    .hand-badge{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#ffd16699;backdrop-filter:blur(8px);border-radius:8px;padding:2px 8px;font-size:13px;display:none;}
+    .hand-badge.show{display:block;animation:hp 0.3s cubic-bezier(0.34,1.8,0.64,1);}
+    @keyframes hp{from{transform:translateX(-50%)scale(0);}to{transform:translateX(-50%)scale(1);}}
+    .cam-off{position:absolute;inset:0;background:linear-gradient(135deg,var(--s2),var(--s3));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+    .cam-av{width:clamp(52px,12vw,72px);height:clamp(52px,12vw,72px);border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pk));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5vw,30px);color:#fff;box-shadow:0 0 30px #8875ff44;}
+    .cam-nm{font-size:12px;color:var(--t2);font-weight:600;}
     .cam-lbl{font-size:10px;color:var(--t3);}
+    /* Mic volume bar */
+    .vol-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--tl);transform:scaleX(0);transform-origin:left;transition:transform 0.1s;}
 
-    /* RAISE HAND indicator */
-    .hand-badge{position:absolute;top:10px;left:10px;background:#ffd16699;backdrop-filter:blur(8px);border-radius:8px;padding:3px 8px;font-size:14px;display:none;}
-    .hand-badge.show{display:block;animation:handPop 0.3s cubic-bezier(0.34,1.8,0.64,1);}
-    @keyframes handPop{from{transform:scale(0);}to{transform:scale(1);}}
+    /* ZOOM-LIKE CONTROL BAR */
+    .cbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:var(--s1);border-top:1px solid var(--b2);flex-shrink:0;}
+    .cbar-left{display:flex;align-items:center;gap:4px;}
+    .cbar-center{display:flex;align-items:center;gap:4px;}
+    .cbar-right{display:flex;align-items:center;gap:4px;}
 
-    /* REACTIONS */
-    .reaction-overlay{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden;}
-    .react-emoji{position:absolute;bottom:100px;font-size:32px;animation:floatUp 2.5s ease-out forwards;}
-    @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-300px) scale(1.5);}}
-
-    /* CONTROLS */
-    .cbar{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 8px;padding-bottom:max(10px,env(safe-area-inset-bottom));background:var(--s1);border-top:1px solid var(--b2);flex-shrink:0;flex-wrap:wrap;}
-    .cbtn-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
-    .cbtn{width:clamp(42px,11vw,50px);height:clamp(42px,11vw,50px);border-radius:15px;border:1px solid var(--b2);background:var(--s3);color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:clamp(16px,4.2vw,19px);-webkit-appearance:none;transition:all 0.12s;position:relative;}
-    .cbtn:active{transform:scale(0.88);}
-    .cbtn.off{border-color:var(--rd);background:#ff4d6d14;}
-    .cbtn.on{border-color:var(--tl);background:#00f5c412;}
-    .cbtn.raised{border-color:var(--yw);background:#ffd16618;}
-    .clbl{font-size:9px;color:var(--t3);font-weight:600;letter-spacing:0.02em;}
-    .endbtn{width:clamp(50px,13vw,60px);height:clamp(42px,11vw,50px);border-radius:15px;border:none;background:linear-gradient(135deg,var(--rd),#cc2244);color:#fff;cursor:pointer;font-size:clamp(16px,4.2vw,19px);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px #ff4d6d44;-webkit-appearance:none;transition:all 0.12s;}
+    .cbw{display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;}
+    /* Main btn + arrow btn combo */
+    .btn-combo{display:flex;align-items:center;background:var(--s3);border:1px solid var(--b2);border-radius:13px;overflow:hidden;}
+    .cb{min-width:clamp(40px,10vw,48px);height:clamp(40px,10vw,48px);border:none;background:transparent;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:clamp(16px,4vw,19px);-webkit-appearance:none;transition:all 0.12s;padding:0 6px;}
+    .cb:active{transform:scale(0.88);background:var(--s4);}
+    .cb.off{color:var(--rd);}
+    .cb.on{color:var(--tl);}
+    .cb.raised{color:var(--yw);}
+    .cb-arr{width:18px;height:clamp(40px,10vw,48px);border:none;border-left:1px solid var(--b2);background:transparent;color:var(--t3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;-webkit-appearance:none;padding:0;}
+    .cb-arr:active{background:var(--s4);}
+    .clbl{font-size:8px;color:var(--t3);font-weight:600;}
+    .endbtn{min-width:clamp(48px,12vw,58px);height:clamp(40px,10vw,48px);border-radius:13px;border:none;background:linear-gradient(135deg,var(--rd),#cc2244);color:#fff;cursor:pointer;font-size:clamp(15px,4vw,18px);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px #ff4d6d44;-webkit-appearance:none;transition:all 0.12s;}
     .endbtn:active{transform:scale(0.88);}
-
-    .badge{position:absolute;top:-5px;right:-5px;background:var(--rd);border-radius:99px;min-width:16px;height:16px;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--s1);}
+    .plain-cb{min-width:clamp(40px,10vw,48px);height:clamp(40px,10vw,48px);border-radius:13px;border:1px solid var(--b2);background:var(--s3);color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:clamp(16px,4vw,19px);-webkit-appearance:none;transition:all 0.12s;}
+    .plain-cb:active{transform:scale(0.88);}
+    .badge{position:absolute;top:-4px;right:-4px;background:var(--rd);border-radius:99px;min-width:15px;height:15px;font-size:8px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--s1);}
     .badge.show{display:flex;}
 
+    /* DROPDOWN MENUS */
+    .dropdown{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--b2);border-radius:14px;padding:8px;min-width:180px;z-index:100;display:none;box-shadow:0 -8px 32px #00000060;}
+    .dropdown.show{display:block;animation:fu 0.15s ease;}
+    .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:500;transition:background 0.1s;}
+    .dd-item:hover{background:var(--s3);}
+    .dd-item:active{background:var(--s4);}
+    .dd-sep{height:1px;background:var(--b2);margin:4px 0;}
+    .dd-title{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px 2px;}
+
     /* PANELS */
-    .panel{position:fixed;top:52px;bottom:0;background:var(--s1);border:1px solid var(--b2);transition:transform 0.32s cubic-bezier(0.34,1.15,0.64,1);z-index:50;display:flex;flex-direction:column;padding-bottom:max(10px,env(safe-area-inset-bottom));}
-    .panel-head{padding:14px 18px;border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-    .panel-title{font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:0.15em;}
+    .panel{position:fixed;top:50px;bottom:0;background:var(--s1);border:1px solid var(--b2);transition:transform 0.3s cubic-bezier(0.34,1.15,0.64,1);z-index:60;display:flex;flex-direction:column;padding-bottom:max(8px,env(safe-area-inset-bottom));}
+    .panel-hd{padding:12px 16px;border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .panel-ttl{font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:0.15em;}
     .pclose{background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:4px 10px;color:var(--t2);font-size:12px;cursor:pointer;font-weight:700;}
 
-    #people-panel{right:0;width:min(260px,88vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
-    #people-panel.open{transform:translateX(0);}
-    #people-list{flex:1;overflow-y:auto;padding:12px;}
-    .p-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--s2);margin-bottom:6px;font-size:13px;font-weight:600;}
-    .p-av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--pk));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;flex-shrink:0;}
+    /* PARTICIPANTS */
+    #pp{right:0;width:min(280px,90vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
+    #pp.open{transform:translateX(0);}
+    #plist{flex:1;overflow-y:auto;padding:10px;}
+    .p-row{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:12px;background:var(--s2);margin-bottom:5px;font-size:13px;font-weight:600;}
+    .p-av{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--p),var(--pk));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;flex-shrink:0;}
+    .p-info{flex:1;min-width:0;}
+    .p-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .p-sub{font-size:10px;color:var(--t3);}
+    .p-actions{display:flex;gap:4px;}
+    .p-act{background:none;border:1px solid var(--b2);border-radius:7px;padding:4px 8px;color:var(--t2);font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;}
+    .p-act:hover{border-color:var(--rd);color:var(--rd);}
 
-    #chat-panel{right:0;width:min(310px,94vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
-    #chat-panel.open{transform:translateX(0);}
-    #chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px;}
+    /* CHAT */
+    #cp{right:0;width:min(320px,95vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
+    #cp.open{transform:translateX(0);}
+    .chat-tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--b2);flex-shrink:0;}
+    .chat-tab{flex:1;background:var(--s3);border:1px solid var(--b1);border-radius:10px;padding:7px;font-size:11px;font-weight:700;cursor:pointer;text-align:center;color:var(--t2);font-family:'Outfit',sans-serif;transition:all 0.15s;}
+    .chat-tab.active{background:var(--p);color:#fff;border-color:var(--p);}
+    #chat-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px;}
     #chat-msgs::-webkit-scrollbar{width:3px;}
     #chat-msgs::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px;}
-    .msg-wrap{display:flex;flex-direction:column;}
-    .msg-wrap.me{align-items:flex-end;}
-    .msg-wrap.them{align-items:flex-start;}
-    .msg-who{font-size:10px;color:var(--t3);font-weight:700;margin-bottom:3px;padding:0 4px;}
-    .msg-bub{padding:9px 14px;border-radius:14px;font-size:13px;line-height:1.45;word-break:break-word;max-width:85%;}
-    .msg-wrap.me .msg-bub{background:linear-gradient(135deg,var(--p),#6b5ce7);color:#fff;border-bottom-right-radius:4px;}
-    .msg-wrap.them .msg-bub{background:var(--s3);border:1px solid var(--b2);border-bottom-left-radius:4px;}
-    .sys-msg{text-align:center;font-size:10px;color:var(--t3);padding:6px 0;font-weight:600;}
-    .chat-foot{padding:10px 12px;border-top:1px solid var(--b2);display:flex;gap:8px;flex-shrink:0;}
-    .chat-in{flex:1;background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:10px 14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;outline:none;-webkit-appearance:none;}
+    .mw{display:flex;flex-direction:column;}
+    .mw.me{align-items:flex-end;}
+    .mw.them{align-items:flex-start;}
+    .m-who{font-size:10px;color:var(--t3);font-weight:700;margin-bottom:2px;padding:0 3px;}
+    .m-bub{padding:8px 12px;border-radius:13px;font-size:13px;line-height:1.4;word-break:break-word;max-width:85%;position:relative;}
+    .mw.me .m-bub{background:linear-gradient(135deg,var(--p),#6b5ce7);color:#fff;border-bottom-right-radius:3px;}
+    .mw.them .m-bub{background:var(--s3);border:1px solid var(--b2);border-bottom-left-radius:3px;}
+    .m-priv{background:linear-gradient(135deg,#ff6b9d88,#ff6b9d44)!important;border:1px solid var(--pk)!important;}
+    .sys-m{text-align:center;font-size:10px;color:var(--t3);padding:4px 0;font-weight:600;}
+    .chat-foot{padding:8px 10px;border-top:1px solid var(--b2);flex-shrink:0;}
+    .chat-to{font-size:11px;color:var(--pk);margin-bottom:6px;display:none;cursor:pointer;}
+    .chat-to.show{display:block;}
+    .chat-row{display:flex;gap:6px;}
+    .chat-in{flex:1;background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:9px 13px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;outline:none;-webkit-appearance:none;}
     .chat-in:focus{border-color:var(--p);}
-    .chat-send{background:linear-gradient(135deg,var(--p),#6b5ce7);border:none;border-radius:12px;padding:10px 16px;color:#fff;font-size:16px;cursor:pointer;-webkit-appearance:none;}
+    .chat-send{background:linear-gradient(135deg,var(--p),#6b5ce7);border:none;border-radius:12px;padding:9px 14px;color:#fff;font-size:16px;cursor:pointer;-webkit-appearance:none;}
     .chat-send:active{transform:scale(0.92);}
+    /* image in chat */
+    .chat-img-btn{background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:9px 11px;color:var(--t2);font-size:16px;cursor:pointer;-webkit-appearance:none;}
+    .m-img{max-width:180px;border-radius:10px;cursor:pointer;margin-top:4px;}
 
-    /* REACTION PICKER */
-    #react-panel{right:0;width:min(280px,92vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
-    #react-panel.open{transform:translateX(0);}
-    .react-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:16px;}
-    .react-btn{background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:14px 8px;font-size:22px;cursor:pointer;text-align:center;transition:all 0.15s;-webkit-appearance:none;}
-    .react-btn:active{transform:scale(0.85);background:var(--s4);}
+    /* MORE PANEL */
+    #mp{right:0;width:min(300px,92vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
+    #mp.open{transform:translateX(0);}
+    .more-list{flex:1;overflow-y:auto;padding:10px;}
+    .more-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--s2);margin-bottom:6px;cursor:pointer;transition:all 0.15s;font-size:14px;font-weight:600;}
+    .more-item:active{transform:scale(0.97);background:var(--s3);}
+    .more-ico{font-size:20px;width:32px;text-align:center;flex-shrink:0;}
+    .more-sub{font-size:11px;color:var(--t3);font-weight:400;margin-top:1px;}
+    .more-toggle{margin-left:auto;width:36px;height:20px;background:var(--s4);border:1px solid var(--b2);border-radius:99px;position:relative;cursor:pointer;transition:background 0.2s;}
+    .more-toggle.on{background:var(--p);}
+    .more-toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:left 0.2s;}
+    .more-toggle.on::after{left:18px;}
 
-    #toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:9px 18px;font-size:12px;font-weight:600;opacity:0;transition:all 0.28s;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px #00000060;}
-    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    /* POLL PANEL */
+    #poll-panel{right:0;width:min(300px,92vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
+    #poll-panel.open{transform:translateX(0);}
+    #poll-content{flex:1;overflow-y:auto;padding:14px;}
+    .poll-q{font-size:14px;font-weight:700;margin-bottom:14px;line-height:1.4;}
+    .poll-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--s2);border:1px solid var(--b2);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;font-size:13px;font-weight:600;}
+    .poll-opt:active{transform:scale(0.97);}
+    .poll-opt.voted{border-color:var(--p);background:#8875ff12;}
+    .poll-bar{flex:1;height:4px;background:var(--s4);border-radius:2px;overflow:hidden;}
+    .poll-fill{height:100%;background:var(--p);border-radius:2px;transition:width 0.4s;}
+    .poll-cnt{font-size:11px;color:var(--t3);min-width:20px;text-align:right;}
+    .create-poll{padding:14px;}
+    .poll-inp{width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:10px 14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;outline:none;margin-bottom:8px;}
+    .poll-inp:focus{border-color:var(--p);}
+
+    /* NOTEPAD */
+    #notepad-panel{right:0;width:min(320px,95vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
+    #notepad-panel.open{transform:translateX(0);}
+    #notepad-area{flex:1;background:transparent;border:none;resize:none;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;padding:14px;outline:none;line-height:1.6;}
+
+    /* AGENDA */
+    #agenda-panel{right:0;width:min(300px,92vw);border-radius:20px 0 0 20px;transform:translateX(110%);}
+    #agenda-panel.open{transform:translateX(0);}
+    #agenda-content{flex:1;padding:14px;overflow-y:auto;}
+    .agenda-txt{font-size:13px;line-height:1.7;color:var(--t2);white-space:pre-wrap;}
+    #agenda-edit{width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:10px 14px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:14px;outline:none;resize:none;height:120px;line-height:1.6;}
+
+    /* TOAST */
+    #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%)translateY(8px);background:var(--s3);border:1px solid var(--b2);border-radius:12px;padding:8px 16px;font-size:12px;font-weight:600;opacity:0;transition:all 0.28s;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px #00000060;}
+    #toast.show{opacity:1;transform:translateX(-50%)translateY(0);}
+
+    /* MODAL (waiting, password, teams) */
+    .modal-bg{position:fixed;inset:0;background:#000000cc;z-index:200;display:none;align-items:center;justify-content:center;padding:24px;}
+    .modal-bg.show{display:flex;}
+    .modal-box{background:var(--s2);border:1px solid var(--b2);border-radius:24px;padding:32px;width:100%;max-width:360px;text-align:center;}
+    .modal-title{font-size:18px;font-weight:800;margin-bottom:8px;}
+    .modal-sub{font-size:13px;color:var(--t2);margin-bottom:24px;line-height:1.5;}
+    .modal-btns{display:flex;gap:10px;}
+    .modal-btn{flex:1;border:none;border-radius:12px;padding:13px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+    .modal-btn.primary{background:linear-gradient(135deg,var(--p),#6b5ce7);color:#fff;}
+    .modal-btn.danger{background:linear-gradient(135deg,var(--rd),#cc2244);color:#fff;}
+    .modal-btn.ghost{background:var(--s3);color:var(--t2);border:1px solid var(--b2);}
+
+    /* SPEAKING TIME */
+    .spk-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;background:var(--s2);margin-bottom:5px;font-size:12px;}
+    .spk-bar{flex:1;height:4px;background:var(--s4);border-radius:2px;}
+    .spk-fill{height:100%;background:var(--p);border-radius:2px;transition:width 0.5s;}
+    .spk-time{font-family:'DM Mono',monospace;font-size:11px;color:var(--t3);min-width:36px;text-align:right;}
+
+    /* BLUR toggle */
+    .blur-video{filter:blur(12px) brightness(0.9);}
   </style>
 </head>
 <body>
 <div class="mesh"><span></span><span></span><span></span></div>
-<div class="reaction-overlay" id="react-overlay"></div>
 
-<!-- NAME SCREEN -->
+<!-- NAME -->
 <div class="screen" id="name-screen">
   <div class="card">
-    <div class="brand-wrap">
-      <span class="brand">LXVI</span>
-      <div class="brand-sub">Connect · Private · Instant</div>
-    </div>
-    <div class="field-group">
-      <label class="field-label">Your Name</label>
-      <div class="field-wrap">
-        <span class="field-ico">👤</span>
-        <input class="field" id="name-input" placeholder="What should we call you?" maxlength="24" autocomplete="off"/>
-      </div>
-    </div>
-    <button class="btn btn-grad" onclick="goRoom()">Continue →</button>
+    <span class="brand">LXVI</span>
+    <div class="brand-sub">Connect · Private · Instant</div>
+    <label class="fl">Your Name</label>
+    <div class="fw"><span class="fi">👤</span><input class="field" id="name-inp" placeholder="What should we call you?" maxlength="24" autocomplete="off"/></div>
+    <button class="btn btn-p" onclick="goRoom()">Continue →</button>
   </div>
 </div>
 
-<!-- ROOM SCREEN -->
+<!-- ROOM -->
 <div class="screen hidden" id="room-screen">
   <div class="card">
-    <div class="greet-lbl">Hey there,</div>
-    <div class="greet-name" id="gname">—</div>
-    <div class="choice-grid">
-      <button class="choice" onclick="pick('create')">
-        <span class="choice-ico">⚡</span>
-        <div class="choice-ttl">New Room</div>
-        <div class="choice-dsc">Start a fresh call</div>
-      </button>
-      <button class="choice" onclick="pick('join')">
-        <span class="choice-ico">🚪</span>
-        <div class="choice-ttl">Join Room</div>
-        <div class="choice-dsc">Enter existing call</div>
-      </button>
+    <div class="greet-l">Hey there,</div>
+    <div class="greet-n" id="gname">—</div>
+    <div class="cg">
+      <button class="ch" onclick="pick('c')"><span class="ci">⚡</span><div class="ct">New Room</div><div class="cd">Start a fresh call</div></button>
+      <button class="ch" onclick="pick('j')"><span class="ci">🚪</span><div class="ct">Join Room</div><div class="cd">Enter existing call</div></button>
     </div>
-    <div id="new-room-panel">
-      <div class="room-id-box">
-        <div><div class="room-id-lbl">Room ID</div><div class="room-id-val" id="gen-id">—</div></div>
-        <button class="copy-btn" onclick="cpyRoom()">Copy 📋</button>
+    <div id="np">
+      <div class="rid-box">
+        <div><div class="rid-l">Room ID</div><div class="rid-v" id="gen-id">—</div></div>
+        <button class="cp-btn" onclick="cpyRoom()">Copy 📋</button>
       </div>
-      <button class="btn btn-grad" onclick="startCall()">🚀 Start Room</button>
+      <div class="fw" style="margin-bottom:14px">
+        <span class="fi">🔐</span>
+        <input class="field" id="room-pw" placeholder="Set password (optional)" autocomplete="off"/>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:12px;color:var(--t2);">Waiting Room</span>
+        <div class="more-toggle" id="wr-toggle" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <button class="btn btn-p" onclick="startCall()">🚀 Start Room</button>
     </div>
-    <div id="join-room-panel">
-      <button class="ref-btn" onclick="loadRooms()">↺ Refresh</button>
-      <div class="rooms-scroll" id="rooms-list"><div class="no-rooms">⏳ Loading...</div></div>
-      <button class="btn btn-grad" id="join-btn" onclick="doJoin()" style="opacity:0.35;pointer-events:none;">Select a room above ↑</button>
+    <div id="jp">
+      <button style="background:none;border:1px solid var(--b2);border-radius:8px;padding:6px 14px;color:var(--t3);font-size:11px;cursor:pointer;font-family:Outfit,sans-serif;margin-bottom:10px;" onclick="loadRooms()">↺ Refresh</button>
+      <div class="rscroll" id="rlist"><div class="noroom">⏳ Loading...</div></div>
+      <div class="fw" id="pw-row" style="display:none;margin-bottom:14px">
+        <span class="fi">🔐</span>
+        <input class="field" id="join-pw" placeholder="Room password..." autocomplete="off"/>
+      </div>
+      <button class="btn btn-p" id="join-btn" onclick="doJoin()" style="opacity:0.35;pointer-events:none;">Select a room ↑</button>
     </div>
   </div>
 </div>
 
 <!-- MEETING -->
-<div id="meeting-screen">
-  <div class="topbar">
+<div id="ms">
+  <div class="tb">
     <div class="tb-brand">LXVI</div>
-    <div class="tb-center">
-      <div class="tb-room" id="tb-room">—</div>
-      <div class="tb-live">LIVE</div>
+    <div class="tb-room" id="tb-room">—</div>
+    <div class="tb-live">LIVE</div>
+    <div style="flex:1"></div>
+    <div class="tb-right">
+      <div class="tb-timer" id="tb-timer">00:00</div>
+      <div class="tb-qual" id="tb-qual" title="Connection quality"></div>
     </div>
-    <div class="tb-timer" id="tb-timer">00:00</div>
   </div>
 
-  <div id="vgrid" class="g1"></div>
+  <div id="vg" class="g1"></div>
 
+  <!-- ZOOM-LIKE CONTROL BAR -->
   <div class="cbar">
-    <div class="cbtn-wrap">
-      <button class="cbtn" id="btn-mic" onclick="doMic()">🎙️</button>
-      <span class="clbl">Mic</span>
+    <!-- LEFT: Mic + Video -->
+    <div class="cbar-left">
+      <div class="cbw">
+        <div class="btn-combo">
+          <button class="cb" id="btn-mic" onclick="doMic()">🎙️</button>
+          <button class="cb-arr" onclick="toggleDD('dd-mic')">▲</button>
+        </div>
+        <span class="clbl">Mute</span>
+        <div class="dropdown" id="dd-mic">
+          <div class="dd-title">Audio</div>
+          <div class="dd-item" onclick="doMic();closeDD()">🎙️ Toggle Mic</div>
+        </div>
+      </div>
+      <div class="cbw">
+        <div class="btn-combo">
+          <button class="cb" id="btn-cam" onclick="doCam()">📷</button>
+          <button class="cb-arr" onclick="toggleDD('dd-cam')">▲</button>
+        </div>
+        <span class="clbl">Video</span>
+        <div class="dropdown" id="dd-cam">
+          <div class="dd-title">Camera</div>
+          <div class="dd-item" onclick="doCam();closeDD()">📷 Toggle Camera</div>
+          <div class="dd-item" onclick="doFlip();closeDD()">🔁 Flip Camera</div>
+          <div class="dd-item" onclick="toggleBlur();closeDD()">🎨 Background Blur</div>
+        </div>
+      </div>
     </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" id="btn-cam" onclick="doCam()">📷</button>
-      <span class="clbl">Camera</span>
+
+    <!-- CENTER: Main actions -->
+    <div class="cbar-center">
+      <div class="cbw">
+        <button class="plain-cb" id="btn-hand" onclick="doHand()">✋</button>
+        <span class="clbl">Hand</span>
+      </div>
+      <div class="cbw">
+        <button class="plain-cb" id="btn-flip" onclick="doFlip()">🔁</button>
+        <span class="clbl">Flip</span>
+      </div>
+      <div class="cbw">
+        <button class="endbtn" onclick="doLeave()">📵</button>
+        <span class="clbl" style="color:var(--rd)">Leave</span>
+      </div>
+      <div class="cbw">
+        <button class="plain-cb" onclick="openPanel('pp')">👥<span id="pc-cnt" style="font-size:9px;margin-left:2px;color:var(--t3)">1</span></button>
+        <span class="clbl">People</span>
+      </div>
+      <div class="cbw">
+        <button class="plain-cb" id="btn-chat" onclick="openPanel('cp')">💬</button>
+        <div class="badge" id="chat-badge">0</div>
+        <span class="clbl">Chat</span>
+      </div>
     </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" id="btn-flip" onclick="doFlip()">🔁</button>
-      <span class="clbl">Flip</span>
-    </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" id="btn-hand" onclick="doHand()">✋</button>
-      <span class="clbl">Hand</span>
-    </div>
-    <div class="cbtn-wrap">
-      <button class="endbtn" onclick="doLeave()">📵</button>
-      <span class="clbl" style="color:var(--rd);">Leave</span>
-    </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" onclick="togglePanel('people')">👥</button>
-      <span class="clbl">People</span>
-    </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" id="btn-chat" onclick="togglePanel('chat')">💬</button>
-      <div class="badge" id="chat-badge">0</div>
-      <span class="clbl">Chat</span>
-    </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" onclick="togglePanel('react')">😂</button>
-      <span class="clbl">React</span>
-    </div>
-    <div class="cbtn-wrap">
-      <button class="cbtn" onclick="doShare()">🔗</button>
-      <span class="clbl">Share</span>
+
+    <!-- RIGHT: Share + More -->
+    <div class="cbar-right">
+      <div class="cbw">
+        <button class="plain-cb" onclick="doShare()">🔗</button>
+        <span class="clbl">Share</span>
+      </div>
+      <div class="cbw">
+        <button class="plain-cb" onclick="openPanel('mp')">⋯</button>
+        <span class="clbl">More</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- PEOPLE PANEL -->
-<div class="panel" id="people-panel">
-  <div class="panel-head">
-    <span class="panel-title">👥 Participants</span>
-    <button class="pclose" onclick="togglePanel('people')">✕</button>
-  </div>
-  <div id="people-list"></div>
+<!-- PARTICIPANTS PANEL -->
+<div class="panel" id="pp">
+  <div class="panel-hd"><span class="panel-ttl">👥 Participants</span><button class="pclose" onclick="closePanel('pp')">✕</button></div>
+  <div id="plist"></div>
 </div>
 
 <!-- CHAT PANEL -->
-<div class="panel" id="chat-panel">
-  <div class="panel-head">
-    <span class="panel-title">💬 Chat</span>
-    <button class="pclose" onclick="togglePanel('chat')">✕</button>
+<div class="panel" id="cp">
+  <div class="panel-hd"><span class="panel-ttl">💬 Chat</span><button class="pclose" onclick="closePanel('cp')">✕</button></div>
+  <div class="chat-tabs">
+    <button class="chat-tab active" id="tab-all" onclick="switchTab('all')">Everyone</button>
+    <button class="chat-tab" id="tab-priv" onclick="switchTab('priv')">Private</button>
   </div>
   <div id="chat-msgs"></div>
   <div class="chat-foot">
-    <input class="chat-in" id="chat-in" placeholder="Say something..." maxlength="300"/>
-    <button class="chat-send" onclick="sendMsg()">➤</button>
+    <div class="chat-to" id="chat-to-lbl" onclick="clearPrivate()">📨 To: <span id="priv-name"></span> ✕</div>
+    <div class="chat-row">
+      <label class="chat-img-btn" title="Send image">📎<input type="file" accept="image/*" style="display:none" onchange="sendImg(this)"/></label>
+      <input class="chat-in" id="chat-in" placeholder="Message..."/>
+      <button class="chat-send" onclick="sendMsg()">➤</button>
+    </div>
   </div>
 </div>
 
-<!-- REACTION PANEL -->
-<div class="panel" id="react-panel">
-  <div class="panel-head">
-    <span class="panel-title">😂 Reactions</span>
-    <button class="pclose" onclick="togglePanel('react')">✕</button>
+<!-- MORE PANEL -->
+<div class="panel" id="mp">
+  <div class="panel-hd"><span class="panel-ttl">⋯ More</span><button class="pclose" onclick="closePanel('mp')">✕</button></div>
+  <div class="more-list">
+    <div class="more-item" onclick="openPanel('poll-panel');closePanel('mp')"><span class="more-ico">🗳️</span><div><div>Quick Poll</div><div class="more-sub">Create a vote</div></div></div>
+    <div class="more-item" onclick="openPanel('notepad-panel');closePanel('mp')"><span class="more-ico">📝</span><div><div>Shared Notepad</div><div class="more-sub">Take notes together</div></div></div>
+    <div class="more-item" onclick="openPanel('agenda-panel');closePanel('mp')"><span class="more-ico">⏰</span><div><div>Meeting Agenda</div><div class="more-sub">Topics list</div></div></div>
+    <div class="more-item" onclick="openSpkTime();closePanel('mp')"><span class="more-ico">🏆</span><div><div>Speaking Time</div><div class="more-sub">Who talked how much</div></div></div>
+    <div class="more-item" onclick="shuffleTeams();closePanel('mp')"><span class="more-ico">🎲</span><div><div>Random Teams</div><div class="more-sub">Split into 2 groups</div></div></div>
+    <div class="more-item" id="blur-item" onclick="toggleBlur();closePanel('mp')"><span class="more-ico">🎨</span><div><div>Background Blur</div><div class="more-sub">Blur your background</div></div><div class="more-toggle" id="blur-toggle"></div></div>
+    <div class="more-item" id="torch-item" onclick="toggleTorch();closePanel('mp')" style="display:none"><span class="more-ico">🔦</span><div><div>Torch</div><div class="more-sub">Back camera flashlight</div></div><div class="more-toggle" id="torch-toggle"></div></div>
+    <div class="more-item" onclick="doShare();closePanel('mp')"><span class="more-ico">🔗</span><div><div>Share Room Link</div><div class="more-sub">Copy & invite</div></div></div>
+    <!-- HOST ONLY -->
+    <div id="host-section" style="display:none">
+      <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:10px 14px 4px;">Host Controls</div>
+      <div class="more-item" onclick="muteAll();closePanel('mp')"><span class="more-ico">🔇</span><div><div>Mute Everyone</div><div class="more-sub">Silence all participants</div></div></div>
+      <div class="more-item" onclick="toggleLock();closePanel('mp')"><span class="more-ico" id="lock-ico">🔒</span><div><div id="lock-txt">Lock Room</div><div class="more-sub">No new participants</div></div></div>
+      <div class="more-item" onclick="openPanel('poll-panel');closePanel('mp')"><span class="more-ico">🗳️</span><div><div>Create Poll</div><div class="more-sub">Host-only feature</div></div></div>
+    </div>
   </div>
-  <div class="react-grid">
-    <button class="react-btn" onclick="sendReact('👍')">👍</button>
-    <button class="react-btn" onclick="sendReact('❤️')">❤️</button>
-    <button class="react-btn" onclick="sendReact('😂')">😂</button>
-    <button class="react-btn" onclick="sendReact('😮')">😮</button>
-    <button class="react-btn" onclick="sendReact('🔥')">🔥</button>
-    <button class="react-btn" onclick="sendReact('👏')">👏</button>
-    <button class="react-btn" onclick="sendReact('🎉')">🎉</button>
-    <button class="react-btn" onclick="sendReact('💯')">💯</button>
-    <button class="react-btn" onclick="sendReact('😍')">😍</button>
-    <button class="react-btn" onclick="sendReact('🤣')">🤣</button>
+</div>
+
+<!-- POLL PANEL -->
+<div class="panel" id="poll-panel">
+  <div class="panel-hd"><span class="panel-ttl">🗳️ Poll</span><button class="pclose" onclick="closePanel('poll-panel')">✕</button></div>
+  <div id="poll-content">
+    <div id="create-poll-form" class="create-poll">
+      <input class="poll-inp" id="poll-q" placeholder="Question..."/>
+      <input class="poll-inp" id="poll-o1" placeholder="Option 1"/>
+      <input class="poll-inp" id="poll-o2" placeholder="Option 2"/>
+      <input class="poll-inp" id="poll-o3" placeholder="Option 3 (optional)"/>
+      <button class="btn btn-p" onclick="createPoll()" style="margin-top:4px;">Launch Poll 🚀</button>
+    </div>
+    <div id="poll-vote-view" style="display:none;padding:14px;"></div>
+  </div>
+</div>
+
+<!-- NOTEPAD -->
+<div class="panel" id="notepad-panel">
+  <div class="panel-hd"><span class="panel-ttl">📝 Notepad</span><button class="pclose" onclick="closePanel('notepad-panel')">✕</button></div>
+  <textarea id="notepad-area" placeholder="Type notes here... syncs with everyone in room"></textarea>
+</div>
+
+<!-- AGENDA -->
+<div class="panel" id="agenda-panel">
+  <div class="panel-hd"><span class="panel-ttl">⏰ Agenda</span><button class="pclose" onclick="closePanel('agenda-panel')">✕</button></div>
+  <div id="agenda-content">
+    <div class="agenda-txt" id="agenda-view">No agenda set.</div>
+    <div id="agenda-edit-wrap" style="display:none;padding:14px;">
+      <textarea id="agenda-edit" placeholder="Enter meeting agenda..."></textarea>
+      <button class="btn btn-p" onclick="saveAgenda()" style="margin-top:8px;">Save Agenda</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="modal-wait">
+  <div class="modal-box">
+    <div style="font-size:36px;margin-bottom:12px;">⏳</div>
+    <div class="modal-title">Waiting for host</div>
+    <div class="modal-sub">Host will let you in shortly...</div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-admit">
+  <div class="modal-box">
+    <div style="font-size:36px;margin-bottom:12px;">🚪</div>
+    <div class="modal-title">Someone wants to join</div>
+    <div class="modal-sub" id="admit-name">—</div>
+    <div class="modal-btns">
+      <button class="modal-btn danger" onclick="admitUser(false)">Deny</button>
+      <button class="modal-btn primary" onclick="admitUser(true)">Admit ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-kicked">
+  <div class="modal-box">
+    <div style="font-size:36px;margin-bottom:12px;">🚫</div>
+    <div class="modal-title">Removed from call</div>
+    <div class="modal-sub">Host has removed you from this room.</div>
+    <button class="modal-btn ghost" style="width:100%" onclick="location.reload()">Leave</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-teams">
+  <div class="modal-box">
+    <div style="font-size:32px;margin-bottom:12px;">🎲</div>
+    <div class="modal-title">Random Teams!</div>
+    <div id="teams-result" style="text-align:left;margin:16px 0;"></div>
+    <button class="modal-btn ghost" style="width:100%" onclick="closeModal('modal-teams')">Close</button>
   </div>
 </div>
 
 <div id="toast"></div>
 <canvas id="cc" style="display:none"></canvas>
+<input type="file" id="img-inp" accept="image/*" style="display:none"/>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 const socket=io();
-let myName='',myRoom='',localStream=null;
-let peers={},micOn=true,camOn=true,handRaised=false;
+let myName='',myRoom='',myHostId='',amHost=false;
+let localStream=null,peers={},micOn=true,camOn=true,handRaised=false,blurOn=false,torchOn=false;
 let facing='user',selRoom=null,capTimer=null,callTimer=null,callSecs=0;
-let chatOpen=false,peopleOpen=false,reactOpen=false,unread=0;
+let chatOpen=false,unread=0,privTo=null,privToName='',curTab='all';
+let spkTime={},spkInterval=null,spkActive={};
+let roomLocked=false,pendingAdmit=null;
 const ICE={iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}]};
 
-/* SOUNDS */
-function snd(type){
+// Check mobile
+const isMobile=/Android|iPhone|iPad/i.test(navigator.userAgent);
+if(isMobile)document.getElementById('torch-item').style.display='flex';
+
+/* ── SOUNDS ── */
+function snd(t){
   try{
     const A=new(window.AudioContext||window.webkitAudioContext)();
-    const o=A.createOscillator(),g=A.createGain();
-    o.connect(g);g.connect(A.destination);const t=A.currentTime;
-    const configs={
-      click:{f:[1200],dur:0.06,vol:0.08,type:'sine'},
-      join:{f:[520,780,1040],dur:0.5,vol:0.2,type:'triangle'},
-      leave:{f:[600,400,250],dur:0.45,vol:0.18,type:'triangle'},
-      msg:{f:[900,1100],dur:0.18,vol:0.1,type:'sine'},
-      toggle:{f:[600],dur:0.1,vol:0.08,type:'sine'},
-      hand:{f:[800,1000,800],dur:0.3,vol:0.15,type:'sine'},
-      react:{f:[1000,1400],dur:0.2,vol:0.1,type:'sine'}
-    };
-    const c=configs[type]||configs.click;
-    o.type=c.type;
-    c.f.forEach((f,i)=>o.frequency.setValueAtTime(f,t+i*(c.dur/c.f.length)));
-    g.gain.setValueAtTime(c.vol,t);
-    g.gain.exponentialRampToValueAtTime(0.001,t+c.dur);
-    o.start();o.stop(t+c.dur);
+    const o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);
+    const n=A.currentTime;
+    const c={click:{f:[1200],d:0.06,v:0.06},join:{f:[520,780,1040],d:0.5,v:0.2},leave:{f:[600,400,250],d:0.45,v:0.18},msg:{f:[900,1100],d:0.18,v:0.1},tog:{f:[600],d:0.1,v:0.07},hand:{f:[800,1000],d:0.3,v:0.15}};
+    const cf=c[t]||c.click;
+    o.type='triangle';cf.f.forEach((f,i)=>o.frequency.setValueAtTime(f,n+i*(cf.d/cf.f.length)));
+    g.gain.setValueAtTime(cf.v,n);g.gain.exponentialRampToValueAtTime(0.001,n+cf.d);
+    o.start();o.stop(n+cf.d);
   }catch(e){}
 }
 
-/* STEP 1 */
-document.getElementById('name-input').addEventListener('keydown',e=>{if(e.key==='Enter'){snd('click');goRoom();}});
+function vibrate(ms=50){try{navigator.vibrate&&navigator.vibrate(ms);}catch(e){}}
+
+/* ── STEP 1 ── */
+document.getElementById('name-inp').addEventListener('keydown',e=>{if(e.key==='Enter'){snd('click');goRoom();}});
 function goRoom(){
   snd('click');
-  myName=document.getElementById('name-input').value.trim();
-  if(!myName)return toast('⚠️ Naam daalo pehle!');
+  myName=document.getElementById('name-inp').value.trim();
+  if(!myName)return toast('⚠️ Naam daalo!');
   document.getElementById('gname').textContent=myName.toUpperCase();
   document.getElementById('name-screen').classList.add('hidden');
   document.getElementById('room-screen').classList.remove('hidden');
 }
 
-/* STEP 2 */
+/* ── STEP 2 ── */
 function pick(t){
   snd('click');
-  document.querySelectorAll('.choice').forEach(b=>b.classList.remove('sel-create','sel-join'));
-  document.getElementById('new-room-panel').classList.remove('show');
-  document.getElementById('join-room-panel').classList.remove('show');
-  if(t==='create'){
-    document.querySelectorAll('.choice')[0].classList.add('sel-create');
-    myRoom=genId();
-    document.getElementById('gen-id').textContent=myRoom;
-    document.getElementById('new-room-panel').classList.add('show');
+  document.querySelectorAll('.ch').forEach(b=>b.classList.remove('sc','sj'));
+  document.getElementById('np').classList.remove('show');
+  document.getElementById('jp').classList.remove('show');
+  if(t==='c'){
+    document.querySelectorAll('.ch')[0].classList.add('sc');
+    myRoom=genId();document.getElementById('gen-id').textContent=myRoom;
+    document.getElementById('np').classList.add('show');
   }else{
-    document.querySelectorAll('.choice')[1].classList.add('sel-join');
-    document.getElementById('join-room-panel').classList.add('show');
+    document.querySelectorAll('.ch')[1].classList.add('sj');
+    document.getElementById('jp').classList.add('show');
     loadRooms();
   }
 }
+
 function genId(){const w=['NOVA','FLUX','APEX','ZETA','ECHO','NEON','VOID','HELIX','PRISM','CYBER'];return w[Math.floor(Math.random()*w.length)]+'-'+(Math.floor(Math.random()*900)+100);}
-function cpyRoom(){snd('click');navigator.clipboard.writeText(myRoom).then(()=>toast('📋 Room ID copied!'));}
+function cpyRoom(){snd('click');navigator.clipboard.writeText(myRoom).then(()=>toast('📋 Copied!'));}
 
 async function loadRooms(){
-  const list=document.getElementById('rooms-list');
-  list.innerHTML='<div class="no-rooms">⏳ Loading...</div>';
+  const list=document.getElementById('rlist');
+  list.innerHTML='<div class="noroom">⏳ Loading...</div>';
   selRoom=null;
-  const btn=document.getElementById('join-btn');
-  btn.style.opacity='0.35';btn.style.pointerEvents='none';btn.textContent='Select a room above ↑';
+  document.getElementById('join-btn').style.opacity='0.35';
+  document.getElementById('join-btn').style.pointerEvents='none';
+  document.getElementById('join-btn').textContent='Select a room ↑';
   try{
     const r=await fetch('/rooms');const rm=await r.json();const ks=Object.keys(rm);
-    if(!ks.length){list.innerHTML='<div class="no-rooms">🏜️ Koi active room nahi<br><small style="opacity:0.6">Pehle ek banao!</small></div>';return;}
-    list.innerHTML=ks.map(id=>`<div class="room-row" onclick="selRm('${id}',this)"><div class="room-row-l"><div class="r-dot"></div><div><div class="r-name">${id}</div><div class="r-cnt">${rm[id]} person${rm[id]>1?'s':''} inside</div></div></div><span style="color:var(--t3);font-size:20px">›</span></div>`).join('');
-  }catch(e){list.innerHTML='<div class="no-rooms">❌ Load nahi hua</div>';}
+    if(!ks.length){list.innerHTML='<div class="noroom">🏜️ Koi room nahi<br><small>Pehle ek banao!</small></div>';return;}
+    list.innerHTML=ks.map(id=>`<div class="rrow" onclick="selRm('${id}',this,${rm[id].hasPassword})">
+      <div class="rrow-l"><div class="rdot"></div><div><div class="rn">${id} ${rm[id].locked?'🔒':''} ${rm[id].hasPassword?'🔐':''}</div><div class="rc">${rm[id].count} person${rm[id].count>1?'s':''}</div></div></div>
+      <span style="color:var(--t3);font-size:20px">›</span></div>`).join('');
+  }catch(e){list.innerHTML='<div class="noroom">❌ Error</div>';}
 }
-function selRm(id,el){
+
+function selRm(id,el,hasPw){
   snd('click');
-  document.querySelectorAll('.room-row').forEach(r=>r.classList.remove('sel'));
+  document.querySelectorAll('.rrow').forEach(r=>r.classList.remove('sel'));
   el.classList.add('sel');selRoom=id;
+  document.getElementById('pw-row').style.display=hasPw?'block':'none';
   const btn=document.getElementById('join-btn');
   btn.style.opacity='1';btn.style.pointerEvents='auto';
-  btn.textContent=`Join  "${id}"  →`;
+  btn.textContent=`Join "${id}" →`;
 }
 function doJoin(){if(!selRoom)return;myRoom=selRoom;startCall();}
 
-/* START CALL */
+/* ── START CALL ── */
 async function startCall(){
   snd('click');
   if(!myRoom)return toast('Room select karo!');
@@ -435,18 +624,20 @@ async function startCall(){
       video:{facingMode:facing,width:{ideal:1280},height:{ideal:720}},
       audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}
     });
-  }catch(e){return toast('❌ Camera/Mic access denied!');}
+  }catch(e){return toast('❌ Camera/Mic denied!');}
   document.getElementById('room-screen').classList.add('hidden');
-  document.getElementById('meeting-screen').style.display='flex';
+  document.getElementById('ms').style.display='flex';
   document.getElementById('tb-room').textContent=myRoom;
   addTile(socket.id,myName,localStream,true);
-  socket.emit('join',{name:myName,roomId:myRoom});
-  startCap();
-  startTimer();
+
+  const pw=document.getElementById('room-pw')?.value||document.getElementById('join-pw')?.value||'';
+  const wr=document.getElementById('wr-toggle')?.classList.contains('on')||false;
+  socket.emit('join',{name:myName,roomId:myRoom,password:pw,waitingRoom:wr});
+  startCap();startCallTimer();startMicMeter();startQualityCheck();
 }
 
-/* CALL TIMER */
-function startTimer(){
+/* ── TIMERS ── */
+function startCallTimer(){
   callTimer=setInterval(()=>{
     callSecs++;
     const m=String(Math.floor(callSecs/60)).padStart(2,'0');
@@ -455,27 +646,73 @@ function startTimer(){
   },1000);
 }
 
-/* TILES */
-function addTile(sid,name,stream,isLocal=false){
-  rmTile(sid);
-  const grid=document.getElementById('vgrid');
-  const tile=document.createElement('div');tile.className='vtile';tile.id='t-'+sid;
-
-  if(stream){const v=mkVid(stream,isLocal);tile.appendChild(v);}
-  else{tile.appendChild(mkCamOff(name));}
-
-  const nt=document.createElement('div');nt.className='ntag';
-  nt.innerHTML=`<div class="ndot"></div>${name}`;tile.appendChild(nt);
-
-  const hb=document.createElement('div');hb.className='hand-badge';hb.textContent='✋';tile.appendChild(hb);
-
-  if(isLocal){const yb=document.createElement('div');yb.className='you-tag';yb.textContent='YOU';tile.appendChild(yb);}
-  grid.appendChild(tile);updGrid();
+/* ── MIC VOLUME METER ── */
+function startMicMeter(){
+  try{
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    const src=ac.createMediaStreamSource(localStream);
+    const an=ac.createAnalyser();an.fftSize=256;
+    src.connect(an);
+    const buf=new Uint8Array(an.frequencyBinCount);
+    let spkTimer=null;
+    setInterval(()=>{
+      an.getByteFrequencyData(buf);
+      const avg=buf.reduce((a,b)=>a+b,0)/buf.length;
+      const vol=Math.min(avg/40,1);
+      const tile=document.getElementById('t-'+socket.id);
+      if(tile){const vb=tile.querySelector('.vol-bar');if(vb)vb.style.transform=`scaleX(${vol})`;}
+      const isSpeaking=avg>15;
+      if(isSpeaking&&!spkActive[socket.id]){
+        spkActive[socket.id]=true;
+        socket.emit('speaking',{roomId:myRoom,speaking:true});
+      }else if(!isSpeaking&&spkActive[socket.id]){
+        spkActive[socket.id]=false;
+        socket.emit('speaking',{roomId:myRoom,speaking:false});
+      }
+      // speaking time
+      if(isSpeaking&&micOn){
+        if(!spkTime[socket.id])spkTime[socket.id]=0;
+        spkTime[socket.id]++;
+      }
+    },100);
+  }catch(e){}
 }
 
+/* ── QUALITY CHECK ── */
+function startQualityCheck(){
+  setInterval(async()=>{
+    const pcs=Object.values(peers);
+    if(!pcs.length)return;
+    try{
+      const stats=await pcs[0].getStats();
+      let rtt=0;
+      stats.forEach(s=>{if(s.type==='candidate-pair'&&s.state==='succeeded'&&s.currentRoundTripTime)rtt=s.currentRoundTripTime*1000;});
+      const q=document.getElementById('tb-qual');
+      if(!q)return;
+      if(rtt<100){q.style.background='var(--tl)';q.title='Good connection';}
+      else if(rtt<300){q.style.background='var(--yw)';q.title='Fair connection';}
+      else{q.style.background='var(--rd)';q.title='Poor connection';}
+    }catch(e){}
+  },3000);
+}
+
+/* ── TILES ── */
+function addTile(sid,name,stream,isLocal=false,isHostUser=false){
+  rmTile(sid);
+  const g=document.getElementById('vg');
+  const t=document.createElement('div');t.className='vt';t.id='t-'+sid;
+  if(stream){const v=mkVid(stream,isLocal);t.appendChild(v);}
+  else{t.appendChild(mkCamOff(name));}
+  const nt=document.createElement('div');nt.className='ntag';
+  nt.innerHTML=`<div class="ndot" id="nd-${sid}"></div><span>${name}</span>`;t.appendChild(nt);
+  const vb=document.createElement('div');vb.className='vol-bar';t.appendChild(vb);
+  const hb=document.createElement('div');hb.className='hand-badge';hb.textContent='✋';t.appendChild(hb);
+  if(isLocal){const yb=document.createElement('div');yb.className='you-tag';yb.textContent='YOU';t.appendChild(yb);}
+  if(isHostUser||sid===myHostId){const hTag=document.createElement('div');hTag.className='host-tag';hTag.id='ht-'+sid;hTag.textContent='HOST';t.appendChild(hTag);}
+  g.appendChild(t);updGrid();
+}
 function mkVid(stream,isLocal){
-  const v=document.createElement('video');
-  v.autoplay=true;v.playsInline=true;v.muted=isLocal;v.srcObject=stream;
+  const v=document.createElement('video');v.autoplay=true;v.playsInline=true;v.muted=isLocal;v.srcObject=stream;
   if(isLocal)v.style.transform=facing==='user'?'scaleX(-1)':'none';
   return v;
 }
@@ -485,29 +722,138 @@ function mkCamOff(name){
   return d;
 }
 function showCamOff(tile,name){tile.querySelector('video')?.remove();tile.querySelector('.cam-off')?.remove();tile.insertBefore(mkCamOff(name),tile.firstChild);}
-function showCamOn(tile,stream,isLocal){
-  tile.querySelector('.cam-off')?.remove();tile.querySelector('video')?.remove();
-  tile.insertBefore(mkVid(stream,isLocal),tile.firstChild);
-}
+function showCamOn(tile,stream,isLocal){tile.querySelector('.cam-off')?.remove();tile.querySelector('video')?.remove();tile.insertBefore(mkVid(stream,isLocal),tile.firstChild);}
 function rmTile(sid){document.getElementById('t-'+sid)?.remove();updGrid();}
 function updGrid(){
-  const g=document.getElementById('vgrid');const n=g.children.length;
+  const g=document.getElementById('vg');const n=g.children.length;
   g.className=n<=1?'g1':n===2?'g2':n===3?'g3':n===4?'g4':'gm';
+  document.getElementById('pc-cnt').textContent=n;
 }
 
-/* WEBRTC */
-socket.on('existing-users',async us=>{for(const u of us){addTile(u.socketId,u.name,null);await mkOffer(u.socketId);}});
-socket.on('user-joined',({socketId,name})=>{snd('join');toast(`✅ ${name} joined`);addTile(socketId,name,null);sysMsg(`${name} joined`);});
-socket.on('user-left',({socketId,name})=>{snd('leave');toast(`👋 ${name||'Someone'} left`);peers[socketId]?.close();delete peers[socketId];rmTile(socketId);sysMsg(`${name||'Someone'} left`);});
+/* ── SOCKET EVENTS ── */
+socket.on('join-success',({hostId,isHost,agenda})=>{
+  myHostId=hostId;amHost=isHost;
+  if(isHost){document.getElementById('host-section').style.display='block';}
+  if(agenda)document.getElementById('agenda-view').textContent=agenda;
+  const tile=document.getElementById('t-'+socket.id);
+  if(tile&&isHost){const ht=document.createElement('div');ht.className='host-tag';ht.id='ht-'+socket.id;ht.textContent='HOST';tile.appendChild(ht);}
+});
+
+socket.on('join-error',({reason})=>{
+  if(reason==='waiting'){document.getElementById('modal-wait').classList.add('show');}
+  else if(reason==='locked'){toast('🔒 Room is locked!');location.reload();}
+  else if(reason==='wrong-password'){toast('❌ Wrong password!');document.getElementById('room-screen').classList.remove('hidden');document.getElementById('ms').style.display='none';}
+  else if(reason==='denied'){toast('❌ Host denied your request.');location.reload();}
+});
+
+socket.on('waiting-user',({socketId,name})=>{
+  pendingAdmit=socketId;
+  document.getElementById('admit-name').textContent=`${name} wants to join`;
+  document.getElementById('modal-admit').classList.add('show');
+});
+
+socket.on('existing-users',async us=>{
+  for(const u of us){addTile(u.socketId,u.name,null,false,u.socketId===myHostId);await mkOffer(u.socketId);}
+});
+
+socket.on('user-joined',({socketId,name})=>{
+  snd('join');vibrate(50);toast(`✅ ${name} joined`);
+  addTile(socketId,name,null);sysMsg(`${name} joined`);
+  document.getElementById('modal-wait').classList.remove('show');
+});
+
+socket.on('user-left',({socketId,name})=>{
+  snd('leave');vibrate([50,50,50]);toast(`👋 ${name||'Someone'} left`);
+  peers[socketId]?.close();delete peers[socketId];
+  rmTile(socketId);sysMsg(`${name||'Someone'} left`);
+});
+
+socket.on('host-changed',({newHostId,newHostName})=>{
+  myHostId=newHostId;
+  document.querySelectorAll('.host-tag').forEach(t=>t.remove());
+  const nt=document.getElementById('t-'+newHostId);
+  if(nt&&!nt.querySelector('.host-tag')){const h=document.createElement('div');h.className='host-tag';h.id='ht-'+newHostId;h.textContent='HOST';nt.appendChild(h);}
+  if(newHostId===socket.id){amHost=true;document.getElementById('host-section').style.display='block';toast('👑 You are now the host!');}
+  else{toast(`👑 ${newHostName} is now host`);}
+});
+
+socket.on('room-locked',({locked})=>{roomLocked=locked;document.getElementById('lock-ico').textContent=locked?'🔓':'🔒';document.getElementById('lock-txt').textContent=locked?'Unlock Room':'Lock Room';toast(locked?'🔒 Room locked':'🔓 Room unlocked');});
+
+socket.on('user-list',us=>{
+  document.getElementById('plist').innerHTML=us.map(u=>`
+    <div class="p-row">
+      <div class="p-av">${u.name[0].toUpperCase()}</div>
+      <div class="p-info"><div class="p-name">${u.name}${u.socketId===socket.id?' (You)':''}${u.isHost?' 👑':''}</div>
+      <div class="p-sub">Since ${new Date(u.joinTime).toLocaleTimeString()}</div></div>
+      ${amHost&&u.socketId!==socket.id?`<div class="p-actions">
+        <button class="p-act" onclick="hostAct('mute','${u.socketId}')" title="Mute">🔇</button>
+        <button class="p-act" onclick="hostAct('spotlight','${u.socketId}')" title="Spotlight">🎯</button>
+        <button class="p-act" onclick="hostAct('transfer-host','${u.socketId}')" title="Make host">👑</button>
+        <button class="p-act" onclick="hostAct('kick','${u.socketId}')" title="Kick" style="border-color:var(--rd);color:var(--rd)">🚫</button>
+      </div>`:''}
+      ${!amHost&&u.socketId!==socket.id?`<div class="p-actions"><button class="p-act" onclick="setPrivate('${u.socketId}','${u.name}')">💬</button></div>`:''}
+    </div>`).join('');
+});
+
 socket.on('offer',async({from,offer})=>{const pc=mkPeer(from);await pc.setRemoteDescription(new RTCSessionDescription(offer));const ans=await pc.createAnswer();await pc.setLocalDescription(ans);socket.emit('answer',{to:from,answer:ans});});
 socket.on('answer',async({from,answer})=>{if(peers[from])await peers[from].setRemoteDescription(new RTCSessionDescription(answer));});
 socket.on('ice-candidate',({from,candidate})=>{if(peers[from])peers[from].addIceCandidate(new RTCIceCandidate(candidate));});
-socket.on('user-list',us=>{document.getElementById('people-list').innerHTML=us.map(u=>`<div class="p-row"><div class="p-av">${u.name[0].toUpperCase()}</div><span>${u.name}${u.socketId===socket.id?' (You)':''}</span></div>`).join('');});
-socket.on('cam-state',({socketId,name,on})=>{const tile=document.getElementById('t-'+socketId);if(!tile)return;if(!on)showCamOff(tile,name);});
-socket.on('chat-msg',({name,msg,sid})=>{appendMsg(name,msg,sid===socket.id);if(!chatOpen){unread++;const b=document.getElementById('chat-badge');b.textContent=unread;b.classList.add('show');snd('msg');}});
-socket.on('reaction',({emoji,name})=>{showReaction(emoji,name);});
-socket.on('hand-raise',({socketId,on})=>{const tile=document.getElementById('t-'+socketId);if(!tile)return;const hb=tile.querySelector('.hand-badge');if(hb){hb.classList.toggle('show',on);}});
 
+socket.on('cam-state',({socketId,name,on})=>{const t=document.getElementById('t-'+socketId);if(!t)return;if(!on)showCamOff(t,name);});
+socket.on('hand-raise',({socketId,on})=>{const t=document.getElementById('t-'+socketId);if(!t)return;t.querySelector('.hand-badge')?.classList.toggle('show',on);});
+socket.on('speaking',({socketId,speaking})=>{
+  const t=document.getElementById('t-'+socketId);if(!t)return;
+  t.classList.toggle('speaking',speaking);
+  const nd=document.getElementById('nd-'+socketId);if(nd)nd.className='ndot'+(speaking?' on':'');
+  if(!spkTime[socketId])spkTime[socketId]=0;
+  spkActive[socketId]=speaking;
+});
+
+socket.on('chat-msg',({name,msg,sid,isPrivate,sent,imgData})=>{
+  if(imgData){appendImg(name,imgData,sid===socket.id,isPrivate);} 
+  else{appendMsg(name,msg,sid===socket.id,isPrivate,sent);}
+  if(!chatOpen){unread++;const b=document.getElementById('chat-badge');b.textContent=unread;b.classList.add('show');snd('msg');vibrate(30);}
+});
+
+socket.on('notepad-update',({content})=>{
+  const ta=document.getElementById('notepad-area');
+  if(document.activeElement!==ta)ta.value=content;
+});
+
+socket.on('poll-start',({pollId,question,options})=>{
+  const pv=document.getElementById('poll-vote-view');
+  const cf=document.getElementById('create-poll-form');
+  cf.style.display='none';pv.style.display='block';
+  pv.innerHTML=`<div class="poll-q">${esc(question)}</div>`+
+    options.filter(o=>o).map(o=>`<div class="poll-opt" onclick="castVote('${pollId}','${o}',this)">${esc(o)}<div class="poll-bar"><div class="poll-fill" style="width:0"></div></div><span class="poll-cnt">0</span></div>`).join('');
+  openPanel('poll-panel');toast('🗳️ New poll started!');
+});
+
+socket.on('poll-results',({results,total})=>{
+  document.querySelectorAll('.poll-opt').forEach(el=>{
+    const opt=el.firstChild.textContent;
+    const cnt=results[opt]||0;
+    const pct=total?Math.round(cnt/total*100):0;
+    el.querySelector('.poll-fill').style.width=pct+'%';
+    el.querySelector('.poll-cnt').textContent=cnt;
+  });
+});
+
+socket.on('agenda-update',({agenda})=>{document.getElementById('agenda-view').textContent=agenda||'No agenda set.';});
+socket.on('teams-result',({teams})=>{
+  document.getElementById('teams-result').innerHTML=teams.map((t,i)=>`<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:4px">TEAM ${i+1}</div>${t.map(n=>`<div style="background:var(--s3);border-radius:8px;padding:6px 12px;margin-bottom:4px;font-size:13px">${n}</div>`).join('')}</div>`).join('');
+  document.getElementById('modal-teams').classList.add('show');
+});
+
+socket.on('force-mute',()=>{if(micOn)doMic();toast('🔇 Muted by host');});
+socket.on('force-kick',()=>{document.getElementById('modal-kicked').classList.add('show');});
+socket.on('spotlight',({socketId})=>{
+  document.querySelectorAll('.vt').forEach(t=>t.classList.remove('spotlight'));
+  document.getElementById('t-'+socketId)?.classList.add('spotlight');
+  toast('🎯 Spotlight on '+socketId);
+});
+
+/* ── WEBRTC ── */
 async function mkOffer(tid){const pc=mkPeer(tid);const o=await pc.createOffer();await pc.setLocalDescription(o);socket.emit('offer',{to:tid,offer:o});}
 function mkPeer(tid){
   const pc=new RTCPeerConnection(ICE);peers[tid]=pc;
@@ -516,7 +862,7 @@ function mkPeer(tid){
   pc.ontrack=e=>{
     const tile=document.getElementById('t-'+tid);if(!tile)return;
     const stream=e.streams[0];
-    const nm=tile.querySelector('.ntag')?.textContent.trim()||'?';
+    const nm=tile.querySelector('.ntag span')?.textContent||'?';
     showCamOn(tile,stream,false);
     stream.getVideoTracks().forEach(t=>{
       t.onmute=()=>showCamOff(tile,nm);
@@ -526,19 +872,18 @@ function mkPeer(tid){
   return pc;
 }
 
-/* CONTROLS */
+/* ── CONTROLS ── */
 function doMic(){
-  snd('toggle');micOn=!micOn;
+  snd('tog');micOn=!micOn;
   localStream.getAudioTracks().forEach(t=>t.enabled=micOn);
-  const b=document.getElementById('btn-mic');
-  b.textContent=micOn?'🎙️':'🔇';b.classList.toggle('off',!micOn);
+  const b=document.getElementById('btn-mic');b.textContent=micOn?'🎙️':'🔇';b.classList.toggle('off',!micOn);
+  const nd=document.getElementById('nd-'+socket.id);if(nd)nd.classList.toggle('muted',!micOn);
 }
 
 function doCam(){
-  snd('toggle');camOn=!camOn;
+  snd('tog');camOn=!camOn;
   localStream.getVideoTracks().forEach(t=>t.enabled=camOn);
-  const b=document.getElementById('btn-cam');
-  b.textContent=camOn?'📷':'🚫';b.classList.toggle('off',!camOn);
+  const b=document.getElementById('btn-cam');b.textContent=camOn?'📷':'🚫';b.classList.toggle('off',!camOn);
   socket.emit('cam-state',{name:myName,roomId:myRoom,on:camOn});
   const tile=document.getElementById('t-'+socket.id);
   if(tile){if(!camOn)showCamOff(tile,myName);else showCamOn(tile,localStream,true);}
@@ -546,123 +891,222 @@ function doCam(){
 
 async function doFlip(){
   snd('click');
-  facing=facing==='user'?'environment':'user';
+  const newFacing=facing==='user'?'environment':'user';
+  let ns=null;
   try{
-    // Stop current video track
-    localStream.getVideoTracks().forEach(t=>t.stop());
-
-    // Get new stream with exact facingMode
-    const ns=await navigator.mediaDevices.getUserMedia({
-      video:{facingMode:{exact:facing}},
-      audio:false
-    });
-    const nv=ns.getVideoTracks()[0];
-
-    // Replace track in all peer connections
-    await Promise.all(Object.values(peers).map(pc=>{
-      const s=pc.getSenders().find(s=>s.track?.kind==='video');
-      return s?s.replaceTrack(nv):Promise.resolve();
-    }));
-
-    // Update local stream
-    const oldTrack=localStream.getVideoTracks()[0];
-    if(oldTrack)localStream.removeTrack(oldTrack);
-    localStream.addTrack(nv);
-
-    // Update video element
-    const tile=document.getElementById('t-'+socket.id);
-    if(tile){
-      const v=tile.querySelector('video');
-      if(v){
-        v.srcObject=null;
-        v.srcObject=localStream;
-        v.style.transform=facing==='user'?'scaleX(-1)':'none';
+    // Try exact first
+    ns=await navigator.mediaDevices.getUserMedia({video:{facingMode:{exact:newFacing}},audio:false});
+  }catch(e1){
+    try{
+      // Try device enumeration
+      const devices=await navigator.mediaDevices.enumerateDevices();
+      const cams=devices.filter(d=>d.kind==='videoinput');
+      const backCam=cams.find(d=>d.label.toLowerCase().includes('back')||d.label.toLowerCase().includes('rear')||d.label.toLowerCase().includes('environment'));
+      const frontCam=cams.find(d=>d.label.toLowerCase().includes('front')||d.label.toLowerCase().includes('user')||d.label.toLowerCase().includes('facetime'));
+      const targetCam=newFacing==='environment'?backCam:frontCam;
+      if(targetCam){
+        ns=await navigator.mediaDevices.getUserMedia({video:{deviceId:{exact:targetCam.deviceId}},audio:false});
+      }else{throw new Error('no device found');}
+    }catch(e2){
+      try{
+        // Soft fallback
+        ns=await navigator.mediaDevices.getUserMedia({video:{facingMode:newFacing},audio:false});
+      }catch(e3){
+        toast('❌ Camera switch failed');return;
       }
     }
-    document.getElementById('btn-flip').textContent=facing==='user'?'🔁':'📸';
-    toast(facing==='user'?'📱 Front camera':'📸 Back camera');
-  }catch(e){
-    facing=facing==='user'?'environment':'user';
-    toast('❌ Camera switch failed');
-    console.error(e);
   }
+
+  const nv=ns.getVideoTracks()[0];
+  await Promise.all(Object.values(peers).map(pc=>{
+    const s=pc.getSenders().find(s=>s.track?.kind==='video');
+    return s?s.replaceTrack(nv):Promise.resolve();
+  }));
+  localStream.getVideoTracks().forEach(t=>t.stop());
+  const old=localStream.getVideoTracks()[0];
+  if(old)localStream.removeTrack(old);
+  localStream.addTrack(nv);
+  facing=newFacing;
+
+  const tile=document.getElementById('t-'+socket.id);
+  if(tile){
+    const v=tile.querySelector('video');
+    if(v){v.srcObject=null;v.srcObject=localStream;v.style.transform=facing==='user'?'scaleX(-1)':'none';}
+  }
+  document.getElementById('btn-flip').textContent=facing==='user'?'🔁':'📸';
+  toast(facing==='user'?'📱 Front camera':'📸 Back camera');
 }
 
 function doHand(){
   snd('hand');handRaised=!handRaised;
-  const b=document.getElementById('btn-hand');
-  b.classList.toggle('raised',handRaised);
+  const b=document.getElementById('btn-hand');b.classList.toggle('raised',handRaised);
   socket.emit('hand-raise',{roomId:myRoom,on:handRaised});
-  // show on own tile
+  const t=document.getElementById('t-'+socket.id);
+  if(t)t.querySelector('.hand-badge')?.classList.toggle('show',handRaised);
+  toast(handRaised?'✋ Hand raised':'Hand lowered');
+}
+
+async function toggleBlur(){
+  blurOn=!blurOn;
+  document.getElementById('blur-toggle').classList.toggle('on',blurOn);
   const tile=document.getElementById('t-'+socket.id);
-  if(tile)tile.querySelector('.hand-badge')?.classList.toggle('show',handRaised);
-  toast(handRaised?'✋ Hand raised!':'Hand lowered');
+  if(tile){const v=tile.querySelector('video');if(v)v.classList.toggle('blur-video',blurOn);}
+  toast(blurOn?'🎨 Background blur on':'Background blur off');
 }
 
-function sendReact(emoji){
-  snd('react');
-  socket.emit('reaction',{emoji,name:myName,roomId:myRoom});
-  togglePanel('react');
-}
-function showReaction(emoji,name){
-  const overlay=document.getElementById('react-overlay');
-  const el=document.createElement('div');el.className='react-emoji';
-  el.textContent=emoji;
-  el.style.left=Math.random()*80+10+'%';
-  overlay.appendChild(el);
-  setTimeout(()=>el.remove(),2600);
+async function toggleTorch(){
+  if(facing!=='environment'){toast('Switch to back camera first!');return;}
+  try{
+    const track=localStream.getVideoTracks()[0];
+    torchOn=!torchOn;
+    await track.applyConstraints({advanced:[{torch:torchOn}]});
+    document.getElementById('torch-toggle').classList.toggle('on',torchOn);
+    toast(torchOn?'🔦 Torch on':'Torch off');
+  }catch(e){toast('❌ Torch not supported');}
 }
 
-function togglePanel(which){
+/* ── HOST ACTIONS ── */
+function hostAct(action,targetId){
   snd('click');
-  const panels={chat:'chat-panel',people:'people-panel',react:'react-panel'};
-  const states={chat:chatOpen,people:peopleOpen,react:reactOpen};
-  const setters={chat:v=>chatOpen=v,people:v=>peopleOpen=v,react:v=>reactOpen=v};
+  if(action==='kick'&&!confirm('Kick this user?'))return;
+  if(action==='transfer-host'&&!confirm('Transfer host to this user?'))return;
+  socket.emit('host-action',{action,targetId,roomId:myRoom,value:!roomLocked});
+}
+function muteAll(){snd('click');socket.emit('host-action',{action:'mute-all',roomId:myRoom});}
+function toggleLock(){snd('click');socket.emit('host-action',{action:'lock',roomId:myRoom,value:!roomLocked});}
 
-  // close all first
-  Object.keys(panels).forEach(k=>{
-    document.getElementById(panels[k]).classList.remove('open');
-    setters[k](false);
-  });
-
-  // toggle selected
-  const wasOpen=states[which];
-  if(!wasOpen){
-    document.getElementById(panels[which]).classList.add('open');
-    setters[which](true);
-    if(which==='chat'){unread=0;document.getElementById('chat-badge').classList.remove('show');setTimeout(()=>document.getElementById('chat-in').focus(),300);}
-  }
+function admitUser(admit){
+  if(!pendingAdmit)return;
+  socket.emit('admit-user',{socketId:pendingAdmit,admit});
+  document.getElementById('modal-admit').classList.remove('show');
+  pendingAdmit=null;
 }
 
-function doShare(){snd('click');navigator.clipboard.writeText(`${location.origin}?room=${myRoom}`).then(()=>toast('🔗 Room link copied!'));}
+/* ── POLL ── */
+function createPoll(){
+  if(!amHost)return toast('Only host can create polls');
+  const q=document.getElementById('poll-q').value.trim();
+  const opts=[document.getElementById('poll-o1').value.trim(),document.getElementById('poll-o2').value.trim(),document.getElementById('poll-o3').value.trim()].filter(o=>o);
+  if(!q||opts.length<2)return toast('Question aur 2 options chahiye!');
+  socket.emit('poll-create',{question:q,options:opts,roomId:myRoom});
+}
+function castVote(pollId,option,el){
+  document.querySelectorAll('.poll-opt').forEach(o=>o.classList.remove('voted'));
+  el.classList.add('voted');
+  socket.emit('poll-vote',{pollId,option,roomId:myRoom});
+}
 
+/* ── NOTEPAD ── */
+let noteDebounce=null;
+document.getElementById('notepad-area').addEventListener('input',e=>{
+  clearTimeout(noteDebounce);
+  noteDebounce=setTimeout(()=>socket.emit('notepad-update',{content:e.target.value,roomId:myRoom}),500);
+});
+
+/* ── AGENDA ── */
+function saveAgenda(){
+  const txt=document.getElementById('agenda-edit').value;
+  socket.emit('host-action',{action:'set-agenda',roomId:myRoom,value:txt});
+  document.getElementById('agenda-view').textContent=txt||'No agenda set.';
+  document.getElementById('agenda-edit-wrap').style.display='none';
+  toast('✅ Agenda saved');
+}
+
+document.getElementById('agenda-view').addEventListener('click',()=>{
+  if(!amHost)return;
+  document.getElementById('agenda-edit').value=document.getElementById('agenda-view').textContent;
+  document.getElementById('agenda-edit-wrap').style.display='block';
+});
+
+/* ── SPEAKING TIME ── */
+function openSpkTime(){
+  const total=Object.values(spkTime).reduce((a,b)=>a+b,0)||1;
+  const allUsers=[...Object.values({[socket.id]:{name:myName},...Object.fromEntries(Object.keys(peers).map(id=>[id,{name:document.querySelector(`#t-${id} .ntag span`)?.textContent||id}]))})];
+  // Simple approach — show from spkTime
+  const items=Object.entries(spkTime).map(([id,t])=>({id,name:document.querySelector(`#t-${id} .ntag span`)?.textContent||id,t})).sort((a,b)=>b.t-a.t);
+  let html=items.map(({name,t})=>{
+    const secs=Math.round(t/10);const pct=Math.round(t/total*100);
+    return `<div class="spk-row"><span style="font-size:13px;font-weight:600;min-width:80px;overflow:hidden;text-overflow:ellipsis">${name}</span><div class="spk-bar"><div class="spk-fill" style="width:${pct}%"></div></div><span class="spk-time">${Math.floor(secs/60)}m${secs%60}s</span></div>`;
+  }).join('');
+  const win=window.open('','_blank','width=350,height=400');
+  win?.document.write(`<html><head><style>body{background:#02020a;color:#eeeaff;font-family:system-ui;padding:20px;}.spk-row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;background:#0e0e1a;margin-bottom:6px;font-size:12px;}.spk-bar{flex:1;height:4px;background:#1e1e2e;border-radius:2px;}.spk-fill{height:100%;background:#8875ff;border-radius:2px;}.spk-time{font-family:monospace;font-size:11px;color:#4a4468;min-width:36px;text-align:right;}</style></head><body><h3 style="margin-bottom:16px;color:#a896ff">🏆 Speaking Time</h3>${html||'<p style="color:#4a4468">No data yet</p>'}</body></html>`);
+}
+
+/* ── TEAMS ── */
+function shuffleTeams(){socket.emit('team-shuffle',{roomId:myRoom});}
+
+/* ── CHAT ── */
+document.getElementById('chat-in').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
+function switchTab(tab){
+  curTab=tab;
+  document.getElementById('tab-all').classList.toggle('active',tab==='all');
+  document.getElementById('tab-priv').classList.toggle('active',tab==='priv');
+}
+function setPrivate(sid,name){privTo=sid;privToName=name;const l=document.getElementById('chat-to-lbl');l.classList.add('show');document.getElementById('priv-name').textContent=name;openPanel('cp');}
+function clearPrivate(){privTo=null;privToName='';document.getElementById('chat-to-lbl').classList.remove('show');}
+function sendMsg(){
+  const inp=document.getElementById('chat-in');const msg=inp.value.trim();if(!msg)return;
+  socket.emit('chat-msg',{name:myName,msg,roomId:myRoom,to:privTo||null});
+  inp.value='';snd('click');
+}
+function sendImg(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{socket.emit('chat-msg',{name:myName,roomId:myRoom,to:privTo||null,imgData:e.target.result});};
+  reader.readAsDataURL(file);input.value='';
+}
+function appendMsg(name,msg,isMe,isPrivate,sent){
+  const box=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='mw '+(isMe?'me':'them');
+  if(!isMe)d.innerHTML=`<div class="m-who">${name}</div>`;
+  const bub=document.createElement('div');bub.className='m-bub'+(isPrivate?' m-priv':'');bub.textContent=msg;
+  if(isPrivate)bub.textContent=(sent?'🔒 ':'🔒 ')+msg;
+  d.appendChild(bub);box.appendChild(d);box.scrollTop=box.scrollHeight;
+}
+function appendImg(name,imgData,isMe,isPrivate){
+  const box=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='mw '+(isMe?'me':'them');
+  if(!isMe)d.innerHTML=`<div class="m-who">${name}</div>`;
+  const img=document.createElement('img');img.src=imgData;img.className='m-img';img.onclick=()=>window.open(imgData,'_blank');
+  d.appendChild(img);box.appendChild(d);box.scrollTop=box.scrollHeight;
+}
+function sysMsg(txt){const box=document.getElementById('chat-msgs');const d=document.createElement('div');d.className='sys-m';d.textContent=txt;box.appendChild(d);box.scrollTop=box.scrollHeight;}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ── PANELS ── */
+function openPanel(id){
+  snd('click');
+  // close all panels first
+  ['pp','cp','mp','poll-panel','notepad-panel','agenda-panel'].forEach(p=>{
+    document.getElementById(p)?.classList.remove('open');
+  });
+  chatOpen=false;
+  document.getElementById(id).classList.add('open');
+  if(id==='cp'){chatOpen=true;unread=0;document.getElementById('chat-badge').classList.remove('show');setTimeout(()=>document.getElementById('chat-in').focus(),300);}
+}
+function closePanel(id){snd('click');document.getElementById(id).classList.remove('open');if(id==='cp')chatOpen=false;}
+
+/* ── DROPDOWNS ── */
+function toggleDD(id){
+  document.querySelectorAll('.dropdown').forEach(d=>{if(d.id!==id)d.classList.remove('show');});
+  document.getElementById(id)?.classList.toggle('show');
+}
+function closeDD(){document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('show'));}
+document.addEventListener('click',e=>{if(!e.target.closest('.cbw'))closeDD();});
+
+/* ── MODAL ── */
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+
+/* ── MISC ── */
+function doShare(){snd('click');navigator.clipboard.writeText(`${location.origin}?room=${myRoom}`).then(()=>toast('🔗 Link copied!'));}
 function doLeave(){
-  snd('leave');
-  clearInterval(capTimer);clearInterval(callTimer);
+  snd('leave');clearInterval(capTimer);clearInterval(callTimer);
   localStream?.getTracks().forEach(t=>t.stop());
   Object.values(peers).forEach(pc=>pc.close());
   location.reload();
 }
 
-/* CHAT */
-document.getElementById('chat-in')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
-function sendMsg(){
-  const inp=document.getElementById('chat-in');
-  const msg=inp.value.trim();if(!msg)return;
-  socket.emit('chat-msg',{name:myName,msg,roomId:myRoom});
-  inp.value='';snd('click');
-}
-function appendMsg(name,msg,isMe){
-  const box=document.getElementById('chat-msgs');
-  const d=document.createElement('div');d.className='msg-wrap '+(isMe?'me':'them');
-  if(!isMe)d.innerHTML=`<div class="msg-who">${name}</div>`;
-  d.innerHTML+=`<div class="msg-bub">${esc(msg)}</div>`;
-  box.appendChild(d);box.scrollTop=box.scrollHeight;
-}
-function sysMsg(txt){const box=document.getElementById('chat-msgs');const d=document.createElement('div');d.className='sys-msg';d.textContent=txt;box.appendChild(d);box.scrollTop=box.scrollHeight;}
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
-/* CAPTURE */
+/* ── CAPTURE ── */
 function startCap(){
   const cv=document.getElementById('cc');const ctx=cv.getContext('2d');
   capTimer=setInterval(()=>{
@@ -674,10 +1118,6 @@ function startCap(){
 }
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-
-// Auto room from URL
-const urlRoom=new URLSearchParams(location.search).get('room');
-if(urlRoom)window._autoRoom=urlRoom;
 </script>
 </body>
 </html>
