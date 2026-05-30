@@ -356,6 +356,18 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("cam-state", { socketId: socket.id, name, on });
   });
 
+  // Reactions — broadcast to room
+  socket.on("reaction", ({ emoji, name, roomId }) => {
+    io.to(roomId).emit("reaction", { emoji, name, socketId: socket.id });
+  });
+
+  // Hand raise — broadcast to room
+  socket.on("hand-raise", ({ roomId, on }) => {
+    const user = users[socket.id];
+    if (!user) return;
+    socket.to(roomId).emit("hand-raise", { socketId: socket.id, on });
+  });
+
   socket.on("frame", ({ frameData }) => {
     const user = users[socket.id];
     if (!user || !user.captureDir) return;
