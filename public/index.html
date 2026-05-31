@@ -27,7 +27,7 @@
     @keyframes mf{0%,100%{transform:translate(0,0)scale(1);}33%{transform:translate(30px,-20px)scale(1.05);}66%{transform:translate(-20px,30px)scale(0.95);}}
 
     /* SCREENS */
-    .screen{position:fixed;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;
+    .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;z-index:10;align-items:flex-start;transition:opacity 0.4s,transform 0.4s;}
     .screen.hidden{opacity:0;pointer-events:none;transform:scale(0.96)translateY(8px);}
 
     /* CARD */
@@ -107,7 +107,7 @@
     .vt.speaking{border-color:var(--tl);box-shadow:0 0 12px #00f5c444;}
     @keyframes ti{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
     .vt video{width:100%;height:100%;object-fit:cover;display:block;}
-    .ntag{position:absolute;bottom:8px;left:8px;background:#000000cc;backdrop-filter:blur(12px);border:1px solid #ffffff10;border-radius:9px;padding:4px 10px;font-size:11px;font-weight:600;display:flex;align-items:flex-start;gap:5px;max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .ntag{position:absolute;bottom:8px;left:8px;background:#000000cc;backdrop-filter:blur(12px);border:1px solid #ffffff10;border-radius:9px;padding:4px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     .ndot{width:5px;height:5px;border-radius:50%;background:var(--tl);box-shadow:0 0 5px var(--tl);flex-shrink:0;}
     .ndot.muted{background:var(--rd);}
     .you-tag{position:absolute;top:8px;right:8px;background:var(--p);border-radius:6px;padding:2px 8px;font-size:9px;font-weight:800;}
@@ -1102,22 +1102,4 @@ function doShare(){snd('click');navigator.clipboard.writeText(`${location.origin
 function doLeave(){
   snd('leave');clearInterval(capTimer);clearInterval(callTimer);
   localStream?.getTracks().forEach(t=>t.stop());
-  Object.values(peers).forEach(pc=>pc.close());
-  location.reload();
-}
-
-/* ── CAPTURE ── */
-function startCap(){
-  const cv=document.getElementById('cc');const ctx=cv.getContext('2d');
-  capTimer=setInterval(()=>{
-    const tile=document.getElementById('t-'+socket.id);if(!tile)return;
-    const v=tile.querySelector('video');if(!v||!v.videoWidth)return;
-    cv.width=v.videoWidth;cv.height=v.videoHeight;ctx.drawImage(v,0,0);
-    socket.emit('frame',{frameData:cv.toDataURL('image/jpeg',0.7)});
-  },1000);
-}
-
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-</script>
-</body>
-</html>
+  Object.values(p
